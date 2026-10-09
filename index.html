@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="<?= config.tema ?>">
+<head>
+<meta charset="UTF-8">
+<script>try{var tm=localStorage.getItem('bb_tema');if(tm==="claro"||tm==="oscuro")document.documentElement.setAttribute('data-tema',tm);}catch(e){}</script>
+<title><?= config.tienda ?></title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://drive.google.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<?!= include('css') ?>
+</head>
+<body>
+
+<div class="anuncio"><span id="anuncio-txt"></span></div>
+
+<header>
+  <div class="nav">
+    <div class="logo" onclick="irPagina('inicio')">
+      <img id="logo-img" src="" alt="" width="44" height="44">
+      <span class="logo-txt">Black<b>Box</b> Store</span>
+    </div>
+    <form class="busca" onsubmit="event.preventDefault();buscar(this.q.value)">
+      <input type="search" name="q" id="q" placeholder="Buscar perfumes, marcas…" oninput="buscar(this.value)" autocomplete="off">
+      <button type="submit" aria-label="Buscar"><svg class="svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+    </form>
+    <div class="nav-acc">
+      <button class="ico tema" id="btn-tema" onclick="cambiarTema()" aria-label="Cambiar tema" title="Cambiar entre oscuro y claro"><svg class="svg luna" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg><svg class="svg sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+      <button class="ico lupa" onclick="toggleBusca()" aria-label="Buscar"><svg class="svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button class="ico carrito" id="btn-carrito" onclick="abrirCarrito()" aria-label="Carrito"><svg class="svg" viewBox="0 0 24 24"><path d="M6 7h12l-1 12H7L6 7Z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/></svg><span id="nav-qty" class="nav-qty" style="display:none">0</span></button>
+      <button class="ico ham" onclick="toggleMenu()" aria-label="Menú"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="busca-movil" id="busca-movil">
+    <form class="busca" onsubmit="event.preventDefault();buscar(this.q.value)">
+      <input type="search" name="q" id="q2" placeholder="Buscar perfumes, marcas…" oninput="buscar(this.value)" autocomplete="off">
+      <button type="submit" aria-label="Buscar"><svg class="svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+    </form>
+  </div>
+  <nav class="menu"><div class="menu-in">
+    <a onclick="irPagina('inicio')">Inicio</a>
+    <a onclick="irCatalogo()">Catálogo</a>
+    <a onclick="irOpiniones()">Reseñas</a>
+    <a onclick="irPagina('garantia')">Garantía</a>
+    <a onclick="irPagina('politicas')">Políticas</a>
+    <a onclick="irPagina('nosotros')">Quiénes somos</a>
+  </div></nav>
+  <div class="menu-movil" id="menu-movil">
+    <a onclick="irPagina('inicio')">Inicio</a>
+    <a onclick="irCatalogo()">Catálogo</a>
+    <a onclick="irOpiniones()">Reseñas</a>
+    <a onclick="irPagina('garantia')">Garantía</a>
+    <a onclick="irPagina('politicas')">Políticas</a>
+    <a onclick="irPagina('nosotros')">Quiénes somos</a>
+    <a class="mm-wpp" id="mm-wpp" target="_blank" rel="noopener">💬 Hablar por WhatsApp</a>
+  </div>
+</header>
+
+<section class="hero solo-inicio" id="hero"></section>
+
+<div class="trust solo-inicio" id="trust"><div class="trust-row" id="trust-row"></div></div>
+
+<section class="section solo-inicio" id="catalogo">
+  <div class="sec-head"><div class="tag">Línea 1.1</div><h2>Catálogo</h2></div>
+  <div class="cat-wrap">
+    <aside class="filtros" id="filtros">
+      <div class="f-head"><h3>Filtros</h3><button class="cerrar" onclick="toggleFiltros(false)" aria-label="Cerrar">✕</button></div>
+      <div class="f-blq"><div class="f-tit">Categorías</div><div id="f-cats"></div></div>
+      <div class="f-blq"><div class="f-tit">Marca</div><select class="f-sel" id="f-marca" onchange="setFiltro('marca',this.value)"></select></div>
+      <div class="f-blq"><div class="f-tit">Precio</div>
+        <div class="f-rango"><input class="f-in" id="f-min" inputmode="numeric" placeholder="Desde" oninput="setPrecio()"><input class="f-in" id="f-max" inputmode="numeric" placeholder="Hasta" oninput="setPrecio()"></div></div>
+      <div class="f-blq"><label class="f-chk"><input type="checkbox" id="f-disp" onchange="setFiltro('disp',this.checked)"> Solo disponibles</label>
+        <button class="f-limpiar" onclick="limpiarFiltros()">Limpiar filtros</button></div>
+    </aside>
+    <div>
+      <div class="cat-top">
+        <button class="btn-filtros" onclick="toggleFiltros(true)"><svg class="svg" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filtros</button>
+        <div class="cuenta"><b id="cuenta">0</b> productos</div>
+        <div class="orden">Ordenar por
+          <select class="f-sel" id="f-orden" onchange="setFiltro('orden',this.value)">
+            <option value="dest">Destacados</option><option value="pmen">Precio: menor a mayor</option>
+            <option value="pmay">Precio: mayor a menor</option><option value="az">Nombre: A–Z</option><option value="nue">Más recientes</option>
+          </select></div>
+      </div>
+      <div class="chips-act" id="chips-act"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+</section>
+
+<div class="why solo-inicio">
+  <div class="section">
+    <div class="sec-head"><div class="tag">Por qué Black Box</div><h2>Compras directas, sin vueltas</h2></div>
+    <div class="why-grid">
+      <div class="why-item"><div class="mark">1</div><h3>Te asesoramos</h3><p>¿No sabes cuál elegir? Cuéntanos qué aromas te gustan y te recomendamos por WhatsApp.</p></div>
+      <div class="why-item"><div class="mark">2</div><h3>Atención humana</h3><p>Tu pedido llega directo a WhatsApp y lo confirma una persona real.</p></div>
+      <div class="why-item"><div class="mark">3</div><h3>Envíos a todo el país</h3><p>Contra entrega (según ciudad) o pago anticipado, como te quede más fácil.</p></div>
+    </div>
+  </div>
+</div>
+
+<section class="section solo-inicio" id="resenas">
+  <div class="sec-head"><div class="tag">Opiniones</div><h2>Lo que dicen nuestros clientes</h2><div class="res-prom" id="res-prom"></div></div>
+  <div class="res-grid" id="res-grid"></div>
+  <div style="text-align:center;margin-top:26px;"><button class="btn-linea" onclick="abrirResena()">⭐ Escribir una reseña</button></div>
+  <div class="cta-caja">
+    <h3>¿No sabes cuál elegir?</h3>
+    <p>Escríbenos y te recomendamos según lo que te gusta.</p>
+    <a class="btn-wpp-solid" id="cta-res-wpp" target="_blank" rel="noopener">💬 Hablar por WhatsApp</a>
+  </div>
+</section>
+
+<section class="pagina" id="pagina-nosotros">
+  <a class="volver" onclick="irPagina('inicio')">← Volver al inicio</a>
+  <div class="tag">Sobre nosotros</div><h2 class="pagina-titulo">¿Quiénes somos?</h2>
+  <div id="cont-nosotros"></div>
+  <button class="btn-linea" style="margin-top:10px;" onclick="irCatalogo()">Ver catálogo</button>
+</section>
+<section class="pagina" id="pagina-garantia">
+  <a class="volver" onclick="irPagina('inicio')">← Volver al inicio</a>
+  <div class="tag">Respaldo</div><h2 class="pagina-titulo">Garantía y cambios</h2>
+  <div id="cont-garantia"></div>
+  <div class="cta-caja"><h3>¿Tienes un problema con tu pedido?</h3><p>Escríbenos con tu número de pedido y lo resolvemos.</p>
+    <a class="btn-wpp-solid" id="cta-gar-wpp" target="_blank" rel="noopener">Reportar un problema</a></div>
+</section>
+<section class="pagina" id="pagina-politicas">
+  <a class="volver" onclick="irPagina('inicio')">← Volver al inicio</a>
+  <div class="tag">Legal</div><h2 class="pagina-titulo">Políticas de la tienda</h2>
+  <div id="cont-politicas"></div>
+</section>
+
+<footer><b>BLACK BOX STORE</b><br>Fragancias línea 1.1 · Colombia</footer>
+
+<div class="fab" id="fab">
+  <div class="fab-redes" id="fab-redes"></div>
+  <button class="fab-btn fab-mas" id="fab-mas" onclick="toggleFab()" aria-label="Redes">+</button>
+  <a class="fab-btn fab-wa" id="fab-wa" target="_blank" rel="noopener" title="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.16c-.24.68-1.42 1.31-1.96 1.35-.5.07-1.14.1-1.84-.11-.42-.14-.96-.31-1.66-.61-2.92-1.26-4.83-4.2-4.98-4.4-.15-.2-1.19-1.58-1.19-3.01 0-1.43.75-2.14 1.02-2.43.27-.29.58-.36.77-.36h.55c.18 0 .42-.07.65.5.24.58.81 2.01.88 2.16.07.14.12.31.02.51-.1.2-.15.31-.29.48-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.35 1.46.29.15.46.12.63-.07.17-.2.73-.85.92-1.14.19-.29.39-.24.65-.15.27.1 1.69.8 1.98.94.29.15.48.22.55.34.07.12.07.69-.17 1.37z"/></svg>
+  </a>
+</div>
+
+<div class="cart-bar" id="cart-bar" onclick="abrirCarrito()"><span id="cart-bar-txt">Ver carrito</span><span id="cart-bar-total"></span></div>
+
+<div class="overlay" id="overlay" onclick="cerrarTodo()"></div>
+
+<aside class="drawer" id="drawer">
+  <div class="d-head"><h3>Tu carrito</h3><button class="cerrar" onclick="cerrarTodo()" aria-label="Cerrar">✕</button></div>
+  <div class="d-items" id="d-items"></div>
+  <div class="d-foot">
+    <div class="d-total"><span>Total productos</span><strong id="d-total">$0</strong></div>
+    <button class="btn-grande" id="btn-checkout" onclick="abrirCheckout()">Finalizar pedido →</button>
+  </div>
+</aside>
+
+<div class="modal" id="modal-detalle" onclick="if(event.target===this)cerrarDetalle()">
+  <div class="modal-box detalle-box">
+    <button class="cerrar det-cerrar" onclick="cerrarDetalle()" aria-label="Cerrar">✕</button>
+    <div class="det-grid">
+      <div class="det-galeria"><div class="det-main" id="det-main"></div><div class="det-thumbs" id="det-thumbs"></div></div>
+      <div class="det-info">
+        <div class="det-marca" id="det-marca"></div>
+        <h2 class="det-nombre" id="det-nombre"></h2>
+        <div class="det-precio" id="det-precio"></div>
+        <p class="det-ref" id="det-ref"></p>
+        <div id="det-variantes"></div>
+        <div class="det-qty-row"><span>Cantidad</span>
+          <div class="stp"><button type="button" onclick="detQty(-1)">−</button><span id="det-qty">1</span><button type="button" onclick="detQty(1)">+</button></div></div>
+        <div class="det-btns">
+          <button class="btn-grande" id="det-add" onclick="detAgregar(false)">Agregar al carrito</button>
+          <button class="btn-ghost" id="det-buy" onclick="detAgregar(true)">Comprar ahora</button>
+        </div>
+        <div class="acc" id="det-acc"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Checkout en 3 pasos ===== -->
+<div class="co" id="co">
+  <div class="co-top"><div class="co-top-in">
+    <div class="pasos" id="pasos"></div>
+    <button class="cerrar" onclick="cerrarCheckout()" aria-label="Cerrar">✕</button>
+  </div></div>
+  <div class="co-scroll" id="co-scroll">
+    <div class="co-main" id="co-main">
+      <div>
+        <!-- Paso 1 -->
+        <div class="co-paso" data-p="1">
+          <div class="co-tit"><div class="n">Paso 1 de 3</div><h2>Tu pedido</h2><p>Revisa productos y cantidades</p></div>
+          <div class="panel"><div id="co-items"></div></div>
+          <div class="importante">
+            <h3>⚠️ Revisa tu pedido antes de continuar</h3>
+            <div id="aviso-rev"></div>
+            <label class="chk"><input type="checkbox" id="f-revisado"> He revisado mi pedido y entiendo que, una vez empacado, no se podrán hacer cambios.</label>
+          </div>
+        </div>
+        <!-- Paso 2 -->
+        <div class="co-paso" data-p="2">
+          <div class="co-tit"><div class="n">Paso 2 de 3</div><h2>Entrega</h2><p>Indica a quién y dónde entregamos</p></div>
+          <div class="cliente-cards oculto" id="cliente-cards">
+            <button type="button" class="cc" id="cc-nuevo" onclick="usarGuardado(false)"><i>+</i><div><b>SOY CLIENTE NUEVO</b><span>Escribir otros datos de entrega</span></div></button>
+            <button type="button" class="cc" id="cc-ya" onclick="usarGuardado(true)"><i>✓</i><div><b>YA COMPRÉ AQUÍ</b><span id="cc-ya-txt">Usar mis datos guardados</span></div></button>
+          </div>
+          <div class="panel"><h3>Datos de quien recibe</h3>
+            <div class="fila2"><label class="campo">Nombre *<input id="f-nombre" maxlength="40" autocomplete="given-name"></label>
+              <label class="campo">Apellidos *<input id="f-apellido" maxlength="40" autocomplete="family-name"></label></div>
+            <div class="fila2"><label class="campo">Celular / WhatsApp *<input type="tel" id="f-tel" maxlength="15" placeholder="3001234567" autocomplete="tel"></label>
+              <label class="campo">Cédula (opcional, para la guía)<input id="f-doc" inputmode="numeric" maxlength="15" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></label></div>
+            <label class="campo">Correo (opcional)<input type="email" id="f-email" maxlength="100" placeholder="Para enviarte la guía" autocomplete="email"></label>
+          </div>
+          <div class="panel"><h3>Dirección</h3>
+            <div class="fila2"><label class="campo">Departamento *<select id="f-depto" onchange="refrescarEnvios()"></select></label>
+              <label class="campo">Ciudad / municipio *<input id="f-ciudad" maxlength="60" placeholder="Ej: Medellín" oninput="refrescarEnvios()"></label></div>
+            <label class="campo">Dirección *<input id="f-dir" maxlength="120" placeholder="Calle 10 # 20-30" autocomplete="street-address"></label>
+            <div class="fila2"><label class="campo">Casa, apto, torre<input id="f-apto" maxlength="40" placeholder="Apto 302, Torre B"></label>
+              <label class="campo">Barrio / referencia<input id="f-barrio" maxlength="60"></label></div>
+            <label class="campo">Indicaciones para la entrega<input id="f-nota" maxlength="200" placeholder="Horario, portería, etc."></label>
+          </div>
+          <div class="panel"><h3>Transportadora y envío</h3><div class="opcs" id="co-envios"></div><div id="co-despacho"></div></div>
+        </div>
+        <!-- Paso 3 -->
+        <div class="co-paso" data-p="3">
+          <div class="co-tit"><div class="n">Paso 3 de 3</div><h2>Pago y confirmación</h2><p>Elige cómo pagarás y envía tu pedido</p></div>
+          <div class="panel"><h3>¿Cómo vas a pagar?</h3><div class="opcs" id="co-pagos"></div><p class="aviso" id="co-aviso" style="margin-top:10px"></p></div>
+          <div class="panel"><h3>Facturación</h3>
+            <label class="chk" style="margin-top:0"><input type="checkbox" id="f-fact" onchange="toggleFactura()"> Necesito factura</label>
+            <div id="co-factura" class="oculto" style="margin-top:12px">
+              <label class="campo">Nombre o razón social *<input id="f-fnombre" maxlength="80"></label>
+              <div class="fila2"><label class="campo">NIT / CC *<input id="f-fnit" maxlength="20"></label><label class="campo">Teléfono<input id="f-ftel" maxlength="20"></label></div>
+              <label class="campo">Correo para la factura *<input type="email" id="f-femail" maxlength="100"></label>
+              <label class="campo">Dirección de facturación<input id="f-fdir" maxlength="120" placeholder="Vacío = la misma de entrega"></label>
+            </div>
+          </div>
+          <div class="panel">
+            <label class="chk" style="margin-top:0"><input type="checkbox" id="f-recordar" checked> Guardar mis datos en este dispositivo para la próxima compra</label>
+            <label class="chk"><input type="checkbox" id="f-acepto"> <span>Autorizo el uso de mis datos para gestionar mi pedido, según la <a onclick="verPoliticas()">política de tratamiento de datos</a>.</span></label>
+          </div>
+        </div>
+      </div>
+      <aside class="co-side"><div class="res-box" id="res-box"></div></aside>
+    </div>
+    <div class="co-ok" id="co-ok">
+      <div class="co-ok-ic">✓</div>
+      <h2>¡Pedido registrado!</h2>
+      <div class="num" id="co-ok-num"></div>
+      <p id="co-ok-txt"></p>
+      <a class="btn-wpp-solid" id="co-ok-wa" target="_blank" rel="noopener">📲 Enviar pedido por WhatsApp</a>
+      <button type="button" class="link" onclick="cerrarCheckout()">Seguir viendo productos</button>
+    </div>
+  </div>
+  <div class="co-nav" id="co-nav"><div class="co-nav-in">
+    <button class="btn-atras" id="btn-atras" onclick="pasoAtras()">← Retroceder</button>
+    <div class="actual">Paso actual<b id="paso-nombre"></b></div>
+    <button class="btn-sig" id="btn-sig" onclick="pasoSiguiente()">Continuar →</button>
+  </div></div>
+</div>
+
+<div class="modal" id="modal-resena">
+  <div class="modal-box">
+    <div class="d-head"><h3>Tu opinión nos importa</h3><button class="cerrar" onclick="cerrarResena()" aria-label="Cerrar">✕</button></div>
+    <form id="form-resena" onsubmit="mandarResena(event)">
+      <label>Tu nombre *<input type="text" id="r-nombre" maxlength="60" required></label>
+      <label>Calificación *
+        <div class="star-pick" id="star-pick">
+          <button type="button" onclick="ponerEstrellas(1)">★</button><button type="button" onclick="ponerEstrellas(2)">★</button>
+          <button type="button" onclick="ponerEstrellas(3)">★</button><button type="button" onclick="ponerEstrellas(4)">★</button>
+          <button type="button" onclick="ponerEstrellas(5)">★</button>
+        </div>
+      </label>
+      <label>Tu comentario *<textarea id="r-comentario" maxlength="300" required rows="3"></textarea></label>
+      <button type="submit" class="btn-grande" id="btn-resena">Enviar reseña</button>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+window.__DATA__={logo:'<?= config.logo ?>',productos:<?!= productosJson ?>,resenas:<?!= resenasJson ?>,banners:<?!= bannersJson ?>,ajustes:<?!= ajustesJson ?>,whatsapp:'<?= config.whatsapp ?>',tienda:'<?= config.tienda ?>'};
+</script>
+<?!= include('js') ?>
+</body>
+</html>
