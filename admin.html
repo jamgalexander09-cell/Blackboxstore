@@ -311,6 +311,8 @@ tbody tr:hover{background:#FBFAF6}
 .barra .bb{flex:1;height:9px;background:var(--panel2);border-radius:999px;overflow:hidden}
 .barra .bb i{display:block;height:100%;background:linear-gradient(90deg,#A97A26,#E6C46D);border-radius:999px}
 .barra b{font-size:12px;white-space:nowrap;color:var(--soft);font-weight:600}
+.reg-filtros{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:18px}
+.dash-acc{display:flex;justify-content:flex-end;margin:-4px 0 14px}
 /* Inicio tipo "elige un módulo" */
 .bienvenida h2{font-family:'Inter',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px}
 .bienvenida p{color:var(--soft);font-size:14px;margin-bottom:22px}
@@ -378,6 +380,7 @@ body.en-inicio .main{max-width:1280px}
       <div class="side-tit" data-m="cartera">Cartera</div>
       <button class="tab" data-v="dash-car" onclick="verTab('dash-car')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg><span>Dashboard</span></button>
       <button class="tab" data-v="cartera" onclick="verTab('cartera')"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg><span>Cuentas por cobrar</span><em class="badge" id="car-pend"></em></button>
+      <button class="tab" data-v="car-registro" onclick="verTab('car-registro')"><svg class="ic" viewBox="0 0 24 24"><path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1Z"/><path d="M8 6H6a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-2"/><path d="m9 14 2 2 4-4"/></svg><span>Registro</span></button>
       <div class="side-tit" data-m="configuracion">Configuración</div>
       <button class="tab" data-v="ajustes" onclick="verTab('ajustes')"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg><span>Ajustes</span></button>
       <button class="tab oculto" data-v="usuarios" id="tab-usuarios" onclick="verTab('usuarios')"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Usuarios</span></button>
@@ -412,7 +415,7 @@ body.en-inicio .main{max-width:1280px}
     </div>
 
     <div class="vista" id="v-empaque"><div class="bloque">
-      <p class="ayuda">Pedidos <b>confirmados por Comercial y con el pago aprobado por Cartera</b> (pagado, contra entrega o crédito). Empácalos y márcalos como empacados. Toca <b>Ver</b> para imprimir la hoja interna o el rótulo.</p>
+      <p class="ayuda">Pedidos <b>confirmados por Cartera</b> (pago aprobado como pagado, contra entrega o crédito). Empácalos y márcalos como empacados. Toca <b>Ver</b> para imprimir la hoja interna o el rótulo.</p>
       <div class="scroll"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Destino</th><th>Und.</th><th>Pago</th><th>Días</th><th></th><th></th></tr></thead><tbody id="tabla-empaque"></tbody></table></div>
       <div id="emp-espera"></div>
     </div></div>
@@ -442,6 +445,7 @@ body.en-inicio .main{max-width:1280px}
     <div class="vista" id="v-dash-log"><div id="dl-cont"></div></div>
     <div class="vista" id="v-dash-inv"><div id="di-cont"></div></div>
     <div class="vista" id="v-dash-car"><div id="dc-cont"></div></div>
+    <div class="vista" id="v-car-registro"><div id="reg-cont"></div></div>
 
     <div class="vista" id="v-cartera">
       <div class="bloque">
@@ -465,7 +469,7 @@ body.en-inicio .main{max-width:1280px}
       <div class="scroll">
       <table><thead><tr><th>Fecha</th><th>Pedido</th><th>Cliente</th><th>Ciudad</th><th>Origen</th><th>Pago</th><th>Total</th><th>Estado</th><th>Días</th><th></th></tr></thead>
       <tbody id="tabla-pedidos"></tbody></table></div>
-      <p class="ayuda" style="margin-top:14px;margin-bottom:0;">Flujo: <b>NUEVO → CONFIRMADO → EMPACADO → ENVIADO → ENTREGADO</b>. El stock se descuenta al confirmar y se devuelve si cancelas. No se puede empacar ni despachar con el pago PENDIENTE.</p>
+      <p class="ayuda" style="margin-top:14px;margin-bottom:0;">Flujo: <b>NUEVO → Cartera aprueba el pago (CONFIRMADO) → EMPACADO → ENVIADO → ENTREGADO</b>. Comercial consulta y crea pedidos; Cartera los confirma o rechaza; Logística los empaca y despacha. El stock se descuenta al confirmar y se devuelve si se cancela.</p>
     </div></div>
 
     <div class="vista" id="v-productos"><div class="bloque">
@@ -709,9 +713,10 @@ body.en-inicio .main{max-width:1280px}
 <div class="modal" id="modal-np">
   <form class="modal-box ped-box" onsubmit="guardarNuevoPedido(event)" autocomplete="off">
     <h3>Nuevo pedido manual</h3>
-    <p class="ayuda">Para ventas que llegan por WhatsApp, Instagram o en persona. Los precios salen del catálogo; aquí solo pones el envío y, si aplica, un descuento.</p>
+    <p class="ayuda">Para ventas que llegan por WhatsApp, Instagram o en persona. Los precios salen del catálogo; aquí solo pones el envío y, si aplica, un descuento.<br>
+    Al crearlo queda <b>NUEVO, esperando a Cartera</b>. Pide la <b>cédula</b>: con ella el cliente puede rastrear su pedido en la tienda.</p>
     <div class="grid2"><label>Origen de la venta<select id="np-origen"><option>WHATSAPP</option><option>INSTAGRAM</option><option>TIKTOK</option><option>TIENDA</option><option>OTRO</option></select></label>
-      <label>Estado del pago<select id="np-pago"><option>PENDIENTE</option><option>PAGADO</option><option>CONTRA ENTREGA</option><option>CRÉDITO</option></select></label></div>
+      <label>Estado del pago<span class="reglas" id="np-pago-nota" style="display:none;margin:0">Lo aprueba Cartera</span><select id="np-pago"><option>PENDIENTE</option><option>PAGADO</option><option>CONTRA ENTREGA</option><option>CRÉDITO</option></select></label></div>
     <div class="sep">Cliente</div>
     <div class="grid2"><label>Nombre completo *<input type="text" id="np-nombre" maxlength="80"></label><label>Celular *<input type="text" id="np-tel" maxlength="15" inputmode="tel" placeholder="3001234567"></label></div>
     <div class="grid2"><label>Cédula / NIT<input type="text" id="np-doc" maxlength="15" inputmode="numeric"></label><label>Correo<input type="text" id="np-correo" maxlength="100"></label></div>
@@ -793,10 +798,8 @@ function $(i){return document.getElementById(i);}
 var MODS=[
 {k:'comercial',t:'Comercial',d:'Ventas, pedidos, clientes y reseñas',ic:'<path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/>',p:[
  {k:'com.dashboard',t:'Dashboard de ventas',d:'Ventas, ticket promedio, origen y más vendidos',v:'resumen'},
- {k:'com.pedidos',t:'Ver pedidos',d:'Lista y detalle de todos los pedidos',v:'pedidos'},
+ {k:'com.pedidos',t:'Ver pedidos',d:'Lista y detalle de todos los pedidos (solo consulta)',v:'pedidos'},
  {k:'com.crear',t:'Crear pedidos manuales',d:'Ventas por WhatsApp, Instagram o en persona',req:'com.pedidos'},
- {k:'com.confirmar',t:'Confirmar o cancelar pedidos',d:'Pasar de NUEVO a CONFIRMADO, o cancelar',req:'com.pedidos'},
- {k:'com.pagos',t:'Aprobar pagos',d:'Igual que Cartera: aprobar el pago desde el pedido',req:'com.pedidos'},
  {k:'com.clientes',t:'Ver clientes',d:'Base de clientes con sus datos',v:'clientes'},
  {k:'com.exportar',t:'Exportar clientes',d:'Copiar la base a la hoja CLIENTES',req:'com.clientes'},
  {k:'com.resenas',t:'Gestionar reseñas',d:'Aprobar o borrar reseñas',v:'resenas'}]},
@@ -814,7 +817,8 @@ var MODS=[
 {k:'cartera',t:'Cartera',d:'Pagos pendientes y contra entrega',ic:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',p:[
  {k:'car.dashboard',t:'Dashboard de cartera',d:'Por cobrar, contra entrega y antigüedad',v:'dash-car'},
  {k:'car.cobros',t:'Ver cuentas por cobrar',d:'Lista de pedidos con pago pendiente',v:'cartera'},
- {k:'car.pagar',t:'Aprobar pagos',d:'Aprobar como pagado, contra entrega o crédito (sin esto el pedido no pasa a logística)',req:'car.cobros'}]},
+ {k:'car.pagar',t:'Aprobar y confirmar pedidos',d:'Aprobar el pago (pagado, contra entrega o crédito) confirma el pedido y lo pasa a logística; también puede rechazarlo',req:'car.cobros'},
+ {k:'car.registro',t:'Registro de aprobaciones',d:'Cuántos pedidos se aprobaron, en qué modalidad, por cuánto y quién',v:'car-registro'}]},
 {k:'configuracion',t:'Configuración',d:'Tienda, envíos y textos',ic:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',p:[
  {k:'conf.ajustes',t:'Editar ajustes de la tienda',d:'Marca, portada, envíos, pagos y textos',v:'ajustes'}]}];
 function misPermisos(){var y=(DATOS&&DATOS.yo)||{};return Array.isArray(y.permisos)?y.permisos:[];}
@@ -1007,7 +1011,7 @@ if(!r||r.auth===false)return sesionVencida();DATOS=r;renderTodo();})
 
 function renderTodo(){renderYo();renderResumen();renderPedidos();renderProductos();renderResenas();renderAjustes();renderUsuarios();renderClientes();renderCategorias();renderModulos();
 var a=document.querySelector('.tab.activo');verTab(a?a.getAttribute('data-v'):'inicio');}
-function renderModulos(){renderDashLog();renderDashInv();renderDashCar();renderLogistica();renderCartera();renderInicio();}
+function renderModulos(){renderDashLog();renderDashInv();renderDashCar();renderLogistica();renderCartera();renderRegistro();renderInicio();}
 var PAGO_OK=['PAGADO','CONTRA ENTREGA','CRÉDITO'];
 // Un pedido entra a logística solo si Comercial lo confirmó y Cartera aprobó el pago
 function aprobado(p){return PAGO_OK.indexOf(p.pago)>=0;}
@@ -1044,8 +1048,8 @@ var v=ped.filter(function(p){return VENTA.indexOf(p.estado)>=0;}),v30=v.filter(f
 var hoyP=ped.filter(function(p){return (p.fecha||0)>=H&&p.estado!=='CANCELADO';});
 var p30=ped.filter(function(p){return (p.fecha||0)>=d30;}),can30=p30.filter(function(p){return p.estado==='CANCELADO';}).length;
 var pct=p30.length?Math.round(can30/p30.length*100):0,resP=(DATOS.resenas||[]).filter(function(r){return !r.aprobado;}).length;
-var h=seccion('Pedidos','',
-tarjeta({i:'bolsa',l:'Por confirmar',v:pend.length,d:'nuevos · '+fmt(suma(pend)),c:pend.length?'alerta':'',tab:'pedidos',fn:"irPedidos('NUEVO')"})
+var h=(tiene('com.crear')?'<div class="dash-acc"><button class="btn-nuevo" onclick="verTab(\'pedidos\');abrirNuevoPedido()">+ Nuevo pedido manual (WhatsApp, Instagram…)</button></div>':'')+seccion('Pedidos','',
+tarjeta({i:'bolsa',l:'Esperando a Cartera',v:pend.length,d:'nuevos sin aprobar · '+fmt(suma(pend)),c:pend.length?'alerta':'',tab:'pedidos',fn:"irPedidos('NUEVO')"})
 +tarjeta({i:'cal',l:'Pedidos de hoy',v:hoyP.length,d:fmt(suma(hoyP))+' en pedidos',tab:'pedidos',fn:"irPedidos('TODOS')"})
 +tarjeta({i:'check',l:'Confirmados · 30 días',v:v30.length,d:fmt(suma(v30))+' vendidos',c:'ok',tab:'pedidos',fn:"irPedidos('TODOS')"})
 +tarjeta({i:'x',l:'Cancelados · 30 días',v:can30,d:pct+' % de los pedidos',c:pct>=15?'rojo':'',tab:'pedidos',fn:"irPedidos('CANCELADO')"})
@@ -1075,7 +1079,7 @@ var alDia=ab.filter(function(p){return diasDe(p)<ANT_AMBAR;}),atr=ab.filter(func
 var bloq=de('CONFIRMADO').filter(function(p){return !aprobado(p);});
 var conF=d30l.filter(function(p){return p.fecha;}),prom=conF.length?(conF.reduce(function(s,p){return s+Math.max(0,p.fechaEnvio-p.fecha);},0)/conF.length/864e5):0;
 var h=seccion('Pedidos por estado','',
-tarjeta({i:'bolsa',l:'Por confirmar',v:nu.length,d:'esperan a Comercial',tab:'pedidos',fn:"irPedidos('NUEVO')"})
+tarjeta({i:'candado',l:'Por aprobar',v:nu.length,d:'esperan a Cartera',c:nu.length?'alerta':'',tab:'cartera',fn:"irCartera('COBRAR')"})
 +tarjeta({i:'check',l:'Por empacar',v:co.length,d:'confirmados con pago aprobado',c:co.length?'alerta':'',tab:'empaque'})
 +tarjeta({i:'caja',l:'Por despachar',v:em.length,d:'empacados sin guía',c:em.length?'alerta':'',tab:'despacho'})
 +tarjeta({i:'camion',l:'En camino',v:en.length,d:'con la transportadora',tab:'encamino'})
@@ -1083,9 +1087,8 @@ tarjeta({i:'bolsa',l:'Por confirmar',v:nu.length,d:'esperan a Comercial',tab:'pe
 h+=seccion('Antigüedad de los pendientes','días desde el pedido · ámbar desde '+ANT_AMBAR+' · rojo desde '+ANT_ROJO,
 tarjeta({i:'check',l:'Al día',v:alDia.length,d:'0 a '+(ANT_AMBAR-1)+' días',c:'ok',tab:'empaque'})
 +tarjeta({i:'alerta',l:'Atrasados',v:atr.length,d:ANT_AMBAR+' a '+(ANT_ROJO-1)+' días',c:atr.length?'alerta':'',tab:'empaque'})
-+tarjeta({i:'x',l:'Críticos',v:cri.length,d:ANT_ROJO+' días o más',c:cri.length?'rojo':'',tab:'empaque'})
-+tarjeta({i:'candado',l:'Esperando a Cartera',v:bloq.length,d:'confirmados sin pago aprobado',c:bloq.length?'alerta':'',tab:'cartera',fn:"irCartera('COBRAR')"}));
-h+='<p class="nota-dash">Solo cuenta pedidos en bodega: confirmados con pago aprobado y empacados. Un pedido entra a logística cuando Comercial lo confirma y Cartera aprueba el pago (pagado, contra entrega o crédito).</p>';
++tarjeta({i:'x',l:'Críticos',v:cri.length,d:ANT_ROJO+' días o más',c:cri.length?'rojo':'',tab:'empaque'}));
+h+='<p class="nota-dash">Solo cuenta pedidos en bodega: confirmados con pago aprobado y empacados. Un pedido entra a logística cuando Cartera aprueba el pago (pagado, contra entrega o crédito): eso lo confirma.</p>';
 h+=seccion('Últimos 30 días','',
 tarjeta({i:'camion',l:'Despachados',v:d30l.length,d:'pedidos con fecha de envío',tab:'encamino'})
 +tarjeta({i:'pila',l:'Unidades despachadas',v:suma(d30l,'articulos'),d:'productos enviados',tab:'encamino'})
@@ -1121,7 +1124,7 @@ $('di-cont').innerHTML=h;}
 function renderDashCar(){if(!tiene('car.dashboard')){$('dc-cont').innerHTML='';return;}
 var pen=carteraLista('COBRAR'),ce=carteraLista('CONTRA'),cr=carteraLista('CREDITO'),todo=pen.concat(ce,cr);
 var ceEnt=ce.filter(function(p){return p.estado==='ENTREGADO';}),ceCam=ce.filter(function(p){return p.estado!=='ENTREGADO';});
-var bloq=pen.filter(function(p){return p.estado==='CONFIRMADO';});
+var bloq=pen.filter(function(p){return diasDe(p)>=2;});
 var crV=cr.filter(function(p){return diasDe(p)>30;});
 function rango(a,b){return todo.filter(function(p){var d=diasDe(p);return d>=a&&(b==null||d<=b);});}
 var r1=rango(0,3),r2=rango(4,7),r3=rango(8);
@@ -1135,7 +1138,8 @@ h+=seccion('Antigüedad de la cartera','días desde el pedido',
 tarjeta({i:'check',l:'0 a 3 días',v:fmt(suma(r1)),d:r1.length+' pedido(s)',c:'ok',tab:'cartera',fn:"irCartera('TODOS')"})
 +tarjeta({i:'alerta',l:'4 a 7 días',v:fmt(suma(r2)),d:r2.length+' pedido(s)',c:r2.length?'alerta':'',tab:'cartera',fn:"irCartera('TODOS')"})
 +tarjeta({i:'x',l:'8 días o más',v:fmt(suma(r3)),d:r3.length+' pedido(s)',c:r3.length?'rojo':'',tab:'cartera',fn:"irCartera('TODOS')"})
-+tarjeta({i:'candado',l:'Frenan el despacho',v:bloq.length,d:'confirmados esperando tu aprobación',c:bloq.length?'alerta':'',tab:'cartera',fn:"irCartera('COBRAR')"}));
++tarjeta({i:'candado',l:'Urgentes',v:bloq.length,d:'por aprobar hace 2 días o más',c:bloq.length?'alerta':'',tab:'cartera',fn:"irCartera('COBRAR')"}));
+h=hoyCarteraHtml()+h;
 var vie=todo.slice().sort(function(a,b){return (a.fecha||0)-(b.fecha||0);}).slice(0,6);
 h+='<div class="bloque"><h3>Cobros más antiguos</h3>'+(vie.length?vie.map(function(p){var d=diasDe(p);
 return '<div class="top-item"><span class="n"><b>'+esc(p.numero)+'</b> · '+esc(p.nombre)+'</span><span class="u">'+esc(p.pago)+' · <span class="dias '+(d>=8?'rojo':(d>=4?'ambar':''))+'">'+d+' d</span></span><span class="t">'+fmt(p.total)+'</span></div>';}).join(''):'<p class="sub">No hay nada pendiente por cobrar. 🙌</p>')+'</div>';
@@ -1143,11 +1147,59 @@ h+='<p class="nota-dash">Ningún pedido pasa a logística sin tu aprobación: pa
 $('dc-cont').innerHTML=h;}
 window.irCartera=function(t){fCar=t||'COBRAR';verTab('cartera');renderCartera();};
 
+/* ===== CARTERA: registro de aprobaciones (cuántos, en qué modalidad, por cuánto y quién) ===== */
+var fReg={per:'30',usr:''},MOD_PAGO=[['PAGADO','Pagado','plata','ok'],['CONTRA ENTREGA','Contra entrega','camion',''],['CRÉDITO','Crédito','cal','']];
+var PERIODOS=[['hoy','Hoy'],['7','7 días'],['30','30 días'],['mes','Este mes'],['mesant','Mes anterior'],['todo','Todo']];
+function rangoPer(k){var H=hoy0(),d=new Date(H);
+if(k==='hoy')return [H,Infinity];if(k==='7')return [H-6*864e5,Infinity];if(k==='30')return [H-29*864e5,Infinity];
+if(k==='mes'){d.setDate(1);return [d.getTime(),Infinity];}
+if(k==='mesant')return [new Date(d.getFullYear(),d.getMonth()-1,1).getTime(),new Date(d.getFullYear(),d.getMonth(),1).getTime()];
+return [0,Infinity];}
+function registroDe(per,usr){var r=rangoPer(per),en=function(t){return !!t&&t>=r[0]&&t<r[1];},ped=DATOS.pedidos||[];
+var ap=ped.filter(function(p){return p.aprobadoComo&&en(p.fechaAprob)&&(!usr||p.aprobadoPor===usr);});
+return {ap:ap,ok:ap.filter(function(p){return p.aprobadoComo!=='RECHAZADO';}),rech:ap.filter(function(p){return p.aprobadoComo==='RECHAZADO';}),
+rec:ped.filter(function(p){return en(p.fechaPago)&&p.estado!=='CANCELADO';}),
+mod:MOD_PAGO.map(function(m){var l=ap.filter(function(p){return p.aprobadoComo===m[0];});return {k:m[0],t:m[1],i:m[2],c:m[3],n:l.length,v:suma(l)};})};}
+window.filtrarReg=function(k,v){fReg[k]=v;renderRegistro();};
+function renderRegistro(){if(!tiene('car.registro')){$('reg-cont').innerHTML='';return;}
+var ped=DATOS.pedidos||[],R=registroDe(fReg.per,fReg.usr);
+var usrs=[];ped.forEach(function(p){if(p.aprobadoPor&&usrs.indexOf(p.aprobadoPor)<0)usrs.push(p.aprobadoPor);});
+var h='<div class="reg-filtros"><div class="est-tabs" style="margin:0">'+PERIODOS.map(function(x){return '<button class="et'+(fReg.per===x[0]?' on':'')+'" onclick="filtrarReg(\'per\',\''+x[0]+'\')">'+x[1]+'</button>';}).join('')+'</div>'
++(usrs.length>1?'<select class="sel-in" style="width:auto" onchange="filtrarReg(\'usr\',this.value)"><option value="">Todas las personas</option>'+usrs.map(function(u){return '<option'+(u===fReg.usr?' selected':'')+'>'+esc(u)+'</option>';}).join('')+'</select>':'')+'</div>';
+h+=seccion('Aprobaciones del periodo','',
+tarjeta({i:'check',l:'Pedidos aprobados',v:R.ok.length,d:fmt(suma(R.ok))+' en total',c:'ok'})
++R.mod.map(function(m){return tarjeta({i:m.i,l:m.t,v:m.n,d:fmt(m.v),c:m.c});}).join('')
++tarjeta({i:'x',l:'Rechazados',v:R.rech.length,d:fmt(suma(R.rech)),c:R.rech.length?'rojo':''}));
+h+=seccion('Dinero recibido','pagos marcados como PAGADO en el periodo',
+tarjeta({i:'plata',l:'Recaudado',v:fmt(suma(R.rec)),d:R.rec.length+' pedido(s)',c:'ok'})
++tarjeta({i:'tarjeta',l:'Aún por cobrar',v:fmt(suma(carteraLista('CONTRA').concat(carteraLista('CREDITO')))),d:'contra entrega y crédito aprobados',tab:'cartera',fn:"irCartera('TODOS')"}));
+var tot=suma(R.ok)||1;
+h+='<div class="dash-grid"><div class="bloque"><h3>Modalidad de pago (por valor)</h3>'+barras(R.mod.filter(function(m){return m.n;}).map(function(m){return {n:m.t,v:m.v,t:Math.round(m.v/tot*100)+' % · '+fmt(m.v)};}))+'</div>';
+var por={};R.ap.forEach(function(p){var u=p.aprobadoPor||'—',x=por[u]=por[u]||{u:u,n:0,v:0,r:0};if(p.aprobadoComo==='RECHAZADO')x.r++;else{x.n++;x.v+=p.total;}});
+var pl=Object.keys(por).map(function(k){return por[k];}).sort(function(a,b){return b.n-a.n;});
+h+='<div class="bloque"><h3>Por persona</h3>'+(pl.length?pl.map(function(x){return '<div class="top-item"><span class="n"><b>'+esc(x.u)+'</b></span><span class="u">'+x.n+' aprobado(s)'+(x.r?' · '+x.r+' rechazado(s)':'')+'</span><span class="t">'+fmt(x.v)+'</span></div>';}).join(''):'<p class="sub">Sin aprobaciones en el periodo.</p>')+'</div></div>';
+var l=R.ap.slice().sort(function(a,b){return (b.fechaAprob||0)-(a.fechaAprob||0);});
+h+='<div class="bloque"><h3>Detalle · '+l.length+' movimiento(s)</h3><div class="scroll"><table><thead><tr><th>Aprobado</th><th>Pedido</th><th>Cliente</th><th>Modalidad</th><th>Valor</th><th>Estado hoy</th><th>Por</th><th></th></tr></thead><tbody>'
++(l.length?l.map(function(p){var rj=p.aprobadoComo==='RECHAZADO';
+return '<tr><td class="sub">'+fechaHora(p.fechaAprob)+'</td><td><b>'+esc(p.numero)+'</b></td><td>'+esc(p.nombre)+'</td>'
++'<td>'+(rj?'<span class="pill off">RECHAZADO</span>':pagoPill(p.aprobadoComo))+(p.fechaPago&&!rj?'<br><span class="sub">Pagado '+fechaHora(p.fechaPago)+'</span>':'')+'</td>'
++'<td class="money">'+fmt(p.total)+'</td><td>'+stPill(p.estado)+'</td><td class="sub">'+esc(p.aprobadoPor||'—')+'</td><td>'+btnVer(p)+'</td></tr>';}).join('')
+:'<tr><td colspan="8" class="sub">No hay aprobaciones en este periodo.</td></tr>')+'</tbody></table></div></div>';
+var viejos=ped.filter(function(p){return PAGO_OK.indexOf(p.pago)>=0&&!p.fechaAprob;}).length;
+if(viejos)h+='<p class="nota-dash" style="margin-top:0">'+viejos+' pedido(s) se aprobaron antes de que existiera este registro: no tienen fecha ni responsable, por eso no aparecen aquí.</p>';
+$('reg-cont').innerHTML=h;}
+// Resumen del día para el dashboard de Cartera
+function hoyCarteraHtml(){var R=registroDe('hoy','');
+return seccion('Hoy','lo que se aprobó y se recibió hoy',
+tarjeta({i:'check',l:'Aprobados hoy',v:R.ok.length,d:fmt(suma(R.ok)),c:'ok',tab:'car-registro',fn:"filtrarReg('per','hoy');verTab('car-registro')"})
++R.mod.map(function(m){return tarjeta({i:m.i,l:m.t,v:m.n,d:fmt(m.v),c:m.c,tab:'car-registro',fn:"filtrarReg('per','hoy');verTab('car-registro')"});}).join('')
++tarjeta({i:'plata',l:'Recibido hoy',v:fmt(suma(R.rec)),d:R.rec.length+' pago(s)',tab:'car-registro',fn:"filtrarReg('per','hoy');verTab('car-registro')"}));}
+
 /* ===== INICIO: tarjetas de los módulos de la persona ===== */
 function pendientesDe(k){var ped=DATOS.pedidos||[];
-if(k==='comercial'){var n=ped.filter(function(p){return p.estado==='NUEVO';}).length;return n?n+' por confirmar':'';}
+if(k==='comercial'){var n=ped.filter(function(p){return p.estado==='NUEVO';}).length;return n?n+' esperando a Cartera':'';}
 if(k==='logistica'){var d=porEmpacar().length+ped.filter(function(p){return p.estado==='EMPACADO';}).length;return d?d+' en bodega':'';}
-if(k==='cartera'){var c=carteraLista('COBRAR').length;return c?c+' por cobrar':'';}
+if(k==='cartera'){var c=carteraLista('COBRAR').length;return c?c+' por aprobar':'';}
 if(k==='inventario'){var a=(DATOS.productos||[]).filter(function(p){return p.stock!==null&&p.stock!==undefined&&p.stock<=0;}).length;return a?a+' agotado(s)':'';}
 return '';}
 function renderInicio(){var y=(DATOS&&DATOS.yo)||{},n=String(y.nombre||y.usuario||'').trim().split(/\s+/)[0];
@@ -1165,14 +1217,14 @@ function porFecha(a,b){return (a.fecha||0)-(b.fecha||0);}
 function renderLogistica(){var ped=DATOS.pedidos||[],trs=((DATOS.ajustes&&DATOS.ajustes.transportadoras)||[]);
 var emp=porEmpacar().sort(porFecha),des=ped.filter(function(p){return p.estado==='EMPACADO';}).sort(porFecha);
 var cam=ped.filter(function(p){return p.estado==='ENVIADO';}).sort(function(a,b){return (a.fechaEnvio||0)-(b.fechaEnvio||0);});
-var esp=ped.filter(function(p){return p.estado==='CONFIRMADO'&&!aprobado(p);});
+var esp=ped.filter(function(p){return p.estado==='NUEVO';});
 $('emp-pend').textContent=emp.length||'';$('desp-pend').textContent=des.length||'';$('cam-pend').textContent=cam.length||'';
 var pe=tiene('log.empaque'),pd=tiene('log.despacho'),pt=tiene('log.entregas');
 $('tabla-empaque').innerHTML=emp.length?emp.map(function(p){
 return '<tr>'+filaCli(p)+'<td><b>'+p.articulos+'</b></td><td>'+pagoPill(p.pago)+'</td><td>'+diasHtml(p)+'</td><td>'+btnVer(p)+'</td>'
 +'<td>'+(pe?'<button class="btn-mini verde" onclick="marcarEmpacado(\''+jsq(p.numero)+'\',this)">✓ Empacado</button>':'')+'</td></tr>';}).join('')
 :'<tr><td colspan="8" class="sub">No hay pedidos por empacar. 🙌</td></tr>';
-$('emp-espera').innerHTML=esp.length?'<p class="ayuda" style="margin:14px 0 0">⏳ <b>'+esp.length+' pedido(s) confirmado(s) esperan que Cartera apruebe el pago.</b> Aparecerán aquí cuando lo aprueben como pagado, contra entrega o crédito.</p>':'';
+$('emp-espera').innerHTML=esp.length?'<p class="ayuda" style="margin:14px 0 0">⏳ <b>'+esp.length+' pedido(s) nuevo(s) esperan que Cartera los apruebe.</b> Aparecerán aquí cuando aprueben el pago (pagado, contra entrega o crédito).</p>':'';
 var opT=trs.map(function(x){return x.n;});
 $('tabla-despacho').innerHTML=des.length?des.map(function(p,i){var l=opT.slice();if(p.transportadora&&l.indexOf(p.transportadora)<0)l.push(p.transportadora);
 return '<tr>'+filaCli(p)+'<td>'+pagoPill(p.pago)+'</td>'
@@ -1192,7 +1244,12 @@ function accionRapida(num,cam,msg,btn){var p=(DATOS.pedidos||[]).find(function(x
 var c={estado:p.estado,pago:p.pago,transportadora:p.transportadora||'',guia:p.guia||'',notaInterna:p.notaInterna||''};for(var k in cam)c[k]=cam[k];
 if(btn)btn.disabled=true;
 google.script.run.withSuccessHandler(function(r){if(btn)btn.disabled=false;if(!r||r.auth===false)return sesionVencida();if(!r.ok)return toast('⚠️ '+(r.error||'Error'));
+var antes=p.pago||'PENDIENTE',estAntes=p.estado,yo=(DATOS.yo||{}).usuario||'';
 p.estado=c.estado;p.pago=c.pago;p.transportadora=c.transportadora;p.guia=c.guia;if(c.estado==='ENVIADO'&&!p.fechaEnvio)p.fechaEnvio=Date.now();
+// Mismo registro que guarda el servidor, para que se vea al instante
+if(antes==='PENDIENTE'&&c.pago!=='PENDIENTE'){p.fechaAprob=Date.now();p.aprobadoPor=yo;p.aprobadoComo=c.pago;}
+else if(antes==='PENDIENTE'&&c.estado==='CANCELADO'&&estAntes!=='CANCELADO'){p.fechaAprob=Date.now();p.aprobadoPor=yo;p.aprobadoComo='RECHAZADO';}
+if(c.pago==='PAGADO'&&antes!=='PAGADO')p.fechaPago=Date.now();
 toast(r.aviso?'⚠️ '+r.aviso:msg);renderModulos();renderPedidos();renderResumen();recargarSilencioso();})
 .withFailureHandler(function(){if(btn)btn.disabled=false;toast('⚠️ Error de conexión');}).adminActualizarPedido(token,num,c);}
 window.marcarEmpacado=function(num,b){accionRapida(num,{estado:'EMPACADO'},'✅ '+num+' empacado · pasa a Despacho',b);};
@@ -1211,9 +1268,9 @@ function renderCartera(){var pen=carteraLista('COBRAR'),ce=carteraLista('CONTRA'
 $('car-pend').textContent=pen.length||'';
 var T=[['COBRAR','Por aprobar',pen.length],['CONTRA','Contra entrega',ce.length],['CREDITO','Crédito',cr.length],['TODOS','Todo',pen.length+ce.length+cr.length]];
 $('car-tabs').innerHTML=T.map(function(t){return '<button class="et'+(fCar===t[0]?' on':'')+'" onclick="filtrarCar(\''+t[0]+'\')">'+t[1]+'<b>'+t[2]+'</b></button>';}).join('');
-var l=carteraLista(fCar).slice().sort(porFecha),pagar=tiene('car.pagar','com.pagos');
+var l=carteraLista(fCar).slice().sort(porFecha),pagar=tiene('car.pagar');
 $('tabla-cartera').innerHTML=l.length?l.map(function(p){var d=diasDe(p),n=jsq(p.numero),acc='';
-if(pagar)acc=p.pago==='PENDIENTE'?'<select class="sel-in" onchange="aprobarPago(\''+n+'\',this)"><option value="">Aprobar como…</option><option>PAGADO</option><option>CONTRA ENTREGA</option><option>CRÉDITO</option></select>'
+if(pagar)acc=p.pago==='PENDIENTE'?'<select class="sel-in" onchange="aprobarPago(\''+n+'\',this)"><option value="">Aprobar como…</option><option>PAGADO</option><option>CONTRA ENTREGA</option><option>CRÉDITO</option><option value="RECHAZAR">✕ Rechazar pedido</option></select>'
 :'<button class="btn-mini verde" onclick="aprobarPago(\''+n+'\',null,\'PAGADO\')">✓ Dinero recibido</button>';
 return '<tr><td><b>'+esc(p.numero)+'</b><br><span class="sub">'+fechaHora(p.fecha)+'</span></td><td>'+esc(p.nombre)+'<br><span class="sub">'+esc(p.telefono)+'</span></td>'
 +'<td>'+stPill(p.estado)+'</td><td>'+pagoPill(p.pago)+(p.metodoPago?'<br><span class="sub">'+esc(p.metodoPago)+'</span>':'')+'</td><td class="money">'+fmt(p.total)+'</td>'
@@ -1222,11 +1279,14 @@ return '<tr><td><b>'+esc(p.numero)+'</b><br><span class="sub">'+fechaHora(p.fech
 :'<tr><td colspan="8" class="sub">No hay nada pendiente aquí. 🙌</td></tr>';}
 window.aprobarPago=function(num,sel,val){val=val||(sel&&sel.value);if(!val)return;
 var p=(DATOS.pedidos||[]).find(function(x){return x.numero===num;});if(!p)return;
-var pasa=p.estado==='CONFIRMADO'&&p.pago==='PENDIENTE';
-var txt=p.pago==='PENDIENTE'?'¿Aprobar el pedido '+num+' ('+fmt(p.total)+') como '+val+'?'+(pasa?'\n\nPasará a Empaque (logística).':p.estado==='NUEVO'?'\n\nPasará a logística cuando Comercial lo confirme.':'')
+if(val==='RECHAZAR'){if(!confirm('¿Rechazar el pedido '+num+' ('+fmt(p.total)+')?\n\nQuedará CANCELADO y no pasará a logística. Avísale al cliente por WhatsApp.')){sel.value='';return;}
+return accionRapida(num,{estado:'CANCELADO'},'Pedido '+num+' rechazado',sel);}
+var nuevo=p.pago==='PENDIENTE',conf=nuevo&&p.estado==='NUEVO';
+var txt=nuevo?'¿Aprobar el pedido '+num+' ('+fmt(p.total)+') como '+val+'?\n\nQuedará CONFIRMADO y pasará a Empaque (logística).'
 :'¿Confirmas que ya recibiste el dinero del pedido '+num+' ('+fmt(p.total)+')?';
 if(!confirm(txt)){if(sel)sel.value='';return;}
-accionRapida(num,{pago:val},'✅ '+num+': '+val+(pasa?' · ya pasa a Empaque':''),sel);};
+var cam={pago:val};if(conf)cam.estado='CONFIRMADO';
+accionRapida(num,cam,'✅ '+num+(nuevo?' aprobado ('+val+') y confirmado · pasa a Empaque':' pagado'),sel);};
 
 // En GitHub la tienda es la página vecina; en Apps Script, la URL /exec
 function urlTienda(){return window.__TIENDA__||(DATOS&&DATOS.tiendaUrl)||'';}
@@ -1245,14 +1305,14 @@ var vt=$('ver-tienda'),tu=urlTienda();if(tu){vt.href=tu;vt.style.display='';}els
 // Botones de acciones según permisos (el servidor igual las rechaza si alguien los fuerza)
 $('btn-np-abrir').classList.toggle('oculto',!tiene('com.crear'));$('btn-export').classList.toggle('oculto',!tiene('com.exportar'));
 $('btn-prod-nuevo').classList.toggle('oculto',!tiene('inv.editar'));
-$('np-pago').disabled=!tiene('com.pagos','car.pagar'); // sin ese permiso el pedido manual queda PENDIENTE para Cartera
+$('np-pago').disabled=!tiene('car.pagar');$('np-pago-nota').style.display=tiene('car.pagar')?'none':''; // sin ese permiso el pedido manual queda PENDIENTE para Cartera
 $('top-yo').innerHTML=y.usuario?'<span class="avatar">'+esc(n.trim().charAt(0).toUpperCase())+'</span><span class="tn">'+esc(n)+'</span><span class="fl-ab">▾</span>':'';
 var l2=$('adm-logo2');if(DATOS&&DATOS.logo){l2.src=DATOS.logo;l2.style.display='';}else l2.style.display='none';
 pintarMenu();}
 var TITULOS={inicio:['Módulos','Elige un módulo para empezar'],resumen:['Dashboard comercial','Ventas, pedidos y clientes'],pedidos:['Pedidos','Confirma y gestiona los pedidos'],clientes:['Clientes','Tu base de compradores'],
 'dash-log':['Dashboard de logística','Estados, antigüedad y despachos'],empaque:['Empaque','Pedidos aprobados por empacar'],despacho:['Despacho','Transportadora, guía y envío'],encamino:['En camino','Seguimiento hasta la entrega'],
 categorias:['Categorías y marcas','Cómo se organiza el catálogo'],
-'dash-inv':['Dashboard de inventario','Agotados, stock bajo y lo que más rota'],'dash-car':['Dashboard de cartera','Lo que falta por cobrar y su antigüedad'],cartera:['Cuentas por cobrar','Pedidos con pago pendiente'],
+'dash-inv':['Dashboard de inventario','Agotados, stock bajo y lo que más rota'],'dash-car':['Dashboard de cartera','Lo que falta por cobrar y su antigüedad'],'car-registro':['Registro de aprobaciones','Qué se aprobó, en qué modalidad y por cuánto'],cartera:['Cuentas por cobrar','Pedidos con pago pendiente'],
 productos:['Productos y stock','Catálogo, precios e inventario'],resenas:['Reseñas','Aprueba lo que se publica en la tienda'],ajustes:['Ajustes','Marca, portada, envíos y textos de la tienda'],usuarios:['Usuarios','Quién puede entrar al panel y qué puede hacer']};
 window.verTab=function(v){if(!tabPermitida(v))v='inicio';MOD_ACT=v==='inicio'?'':modDeTab(v);pintarMenu();
 document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('activo',t.getAttribute('data-v')===v);});
@@ -1272,7 +1332,7 @@ function diasDe(p){if(!p.fecha)return 0;var h=new Date();h.setHours(0,0,0,0);var
 function stPill(e){return '<span class="st st-'+esc(e)+'">'+esc(e)+'</span>';}
 function pagoPill(p){var c=p==='PAGADO'?'on':(p==='CONTRA ENTREGA'||p==='CRÉDITO'?'ce':'off');return '<span class="pill '+c+'">'+esc(p)+'</span>';}
 function diasHtml(p){if(ABIERTOS.indexOf(p.estado)<0)return '<span class="sub">—</span>';var d=diasDe(p);return '<span class="dias '+(d>=4?'rojo':(d>=2?'ambar':''))+'">'+d+' d</span>';}
-var TABS=[['ACTIVOS','Activos'],['NUEVO','Por confirmar'],['CONFIRMADO','Por empacar'],['EMPACADO','Por despachar'],['ENVIADO','En camino'],['ENTREGADO','Entregados'],['CANCELADO','Cancelados'],['TODOS','Todos']];
+var TABS=[['ACTIVOS','Activos'],['NUEVO','Esperando a Cartera'],['CONFIRMADO','Por empacar'],['EMPACADO','Por despachar'],['ENVIADO','En camino'],['ENTREGADO','Entregados'],['CANCELADO','Cancelados'],['TODOS','Todos']];
 function enTab(p,t){if(t==='TODOS')return true;if(t==='ACTIVOS')return ['NUEVO','CONFIRMADO','EMPACADO','ENVIADO'].indexOf(p.estado)>=0;return p.estado===t;}
 window.filtrarEst=function(t){fEst=t;renderPedidos();};
 window.irPedidos=function(t,pago){fEst=t||'ACTIVOS';$('ped-pago').value=pago||'';verTab('pedidos');renderPedidos();};
@@ -1306,7 +1366,7 @@ if(p.transportadora&&tr.indexOf(p.transportadora)<0)tr.push(p.transportadora);
 $('pd-trans').innerHTML='<option value="">Elegir…</option>'+tr.map(function(n){return '<option'+(n===p.transportadora?' selected':'')+'>'+esc(n)+'</option>';}).join('');
 $('pd-guia').value=p.guia||'';$('pd-nota').value=p.notaInterna||'';
 // Cada campo según su permiso (el servidor también lo valida)
-$('pd-estado').disabled=$('pd-estado').options.length<2;$('pd-pago').disabled=!tiene('com.pagos','car.pagar');
+$('pd-estado').disabled=$('pd-estado').options.length<2;$('pd-pago').disabled=!tiene('car.pagar');
 $('pd-trans').disabled=$('pd-guia').disabled=!tiene('log.despacho');
 var sg=SIGUIENTE[p.estado];if(sg&&!puedeEstado(sg))sg='';var b=$('pd-sig');b.style.display=sg?'':'none';b.textContent=sg?'Avanzar a '+sg+' →':'';b.setAttribute('data-e',sg||'');
 $('wa-enviado').classList.toggle('resaltar',p.estado==='ENVIADO');
@@ -1314,7 +1374,7 @@ $('modal-ped').classList.add('visible');
 google.script.run.withSuccessHandler(function(r){if(!r||r.auth===false)return sesionVencida();
 if(!r.ok)return toast('⚠️ '+(r.error||'Error'));if(pdNum!==num)return;PD=r;pintarDetalle();})
 .withFailureHandler(function(){toast('⚠️ Error de conexión');}).adminPedido(token,num);};
-function puedeEstado(e){return tiene({EMPACADO:'log.empaque',ENVIADO:'log.despacho',ENTREGADO:'log.entregas'}[e]||'com.confirmar');}
+function puedeEstado(e){return tiene({EMPACADO:'log.empaque',ENVIADO:'log.despacho',ENTREGADO:'log.entregas'}[e]||'car.pagar');}
 window.cerrarPedidoModal=function(){$('modal-ped').classList.remove('visible');};
 
 function pintarDetalle(){var p=PD.pedido,it=PD.items;
@@ -1329,9 +1389,11 @@ if(p.factura)h+='<div class="ayuda"><b>🧾 Factura:</b> '+esc(p.factura)+'</div
 $('pd-body').innerHTML=h;}
 
 window.guardarPedido=function(sig){var e=sig||$('pd-estado').value;
+// Aprobar el pago de un pedido NUEVO lo confirma (así funciona Cartera)
+if(e==='NUEVO'&&$('pd-pago').value!=='PENDIENTE'&&pdPrev==='NUEVO')e='CONFIRMADO';
 if(e==='CANCELADO'&&pdPrev!=='CANCELADO'&&!confirm('¿Cancelar el pedido '+pdNum+'?\nSi tenía stock descontado, se devuelve al inventario.'))return;
 var c={estado:e,pago:$('pd-pago').value,transportadora:$('pd-trans').value,guia:$('pd-guia').value.trim(),notaInterna:$('pd-nota').value.trim()};
-if(['EMPACADO','ENVIADO','ENTREGADO'].indexOf(e)>=0&&c.pago==='PENDIENTE')return toast('Cartera aún no aprueba el pago (pagado, contra entrega o crédito): no puede pasar a logística');
+if(['CONFIRMADO','EMPACADO','ENVIADO','ENTREGADO'].indexOf(e)>=0&&c.pago==='PENDIENTE')return toast('Para confirmar, Cartera debe aprobar el pago: pagado, contra entrega o crédito');
 if((e==='ENVIADO'||e==='ENTREGADO')&&!c.transportadora)return toast('Elige la transportadora antes de despachar');
 var bs=[$('pd-sig'),$('pd-guardar')];bs.forEach(function(b){b.disabled=true;});
 google.script.run.withSuccessHandler(function(r){bs.forEach(function(b){b.disabled=false;});
@@ -1464,7 +1526,7 @@ if(!NP.length)return toast('Agrega al menos un producto');
 var b=$('btn-np');b.disabled=true;b.textContent='Creando…';
 google.script.run.withSuccessHandler(function(r){b.disabled=false;b.textContent='Crear pedido';
 if(!r||r.auth===false)return sesionVencida();if(!r.ok)return toast('⚠️ '+(r.error||'Error'));
-$('modal-np').classList.remove('visible');toast('✅ Pedido '+r.numero+' creado');
+$('modal-np').classList.remove('visible');toast(r.aviso?'⚠️ '+r.aviso:'✅ Pedido '+r.numero+' creado'+(r.estado==='CONFIRMADO'?' y confirmado · pasa a Empaque':' · queda esperando a Cartera'));
 google.script.run.withSuccessHandler(function(x){if(x&&x.ok){DATOS=x;fEst='ACTIVOS';renderResumen();verTab('pedidos');renderPedidos();abrirPedido(r.numero);}}).withFailureHandler(function(){}).adminDatos(token);})
 .withFailureHandler(function(){b.disabled=false;b.textContent='Crear pedido';toast('⚠️ Error de conexión');})
 .adminCrearPedido(token,d);};
