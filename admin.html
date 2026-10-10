@@ -595,6 +595,9 @@ body.en-inicio .main{max-width:1280px}
           <label class="check"><input type="checkbox" id="a-desp-auto"> Calcular la fecha de despacho automáticamente</label>
           <label>Título (si la fecha automática está desactivada)<input type="text" id="a-desp-tit" placeholder="Lo más pronto posible"></label>
           <label>Texto<textarea id="a-desp-txt" class="corto"></textarea></label>
+          <div class="grid2"><label>Días de entrega · Área metropolitana (después del despacho)<input type="text" id="a-ent-local" placeholder="1-2"></label>
+          <label>Días de entrega · Resto del país<input type="text" id="a-ent-nac" placeholder="2-5"></label></div>
+          <p class="reglas">Días hábiles que tarda la transportadora, como "mínimo-máximo". Se usan en el tiempo estimado del producto y en el rastreo de pedidos.</p>
           <button class="btn-gold" onclick="guardarAjustes(this)">Guardar mensaje</button>
         </div>
         <div class="bloque"><h3>Aviso "Revisa tu pedido" (paso 1 del checkout)</h3>
@@ -646,13 +649,21 @@ body.en-inicio .main{max-width:1280px}
     <label>Descripción corta<textarea id="p-desc" placeholder="Una o dos frases: cómo huele y para qué ocasión."></textarea></label>
 
     <div class="sep">Precio y presentaciones</div>
-    <label>Presentaciones con su precio (una por línea; vacío = precio único)<textarea id="p-pres" placeholder="30 ml | 55000&#10;100 ml | 95000"></textarea></label>
-    <label>Precio único (COP) — si usas presentaciones puedes dejarlo vacío<input type="number" id="p-precio" min="0"></label>
+    <label>Presentaciones con su precio (una por línea; vacío = precio único)<textarea id="p-pres" placeholder="30 ml | 55000&#10;100 ml | 95000 | 120000"></textarea></label>
+    <p class="reglas">🔥 <b>Oferta:</b> agrega el precio anterior como tercer valor: <b>100 ml | 95000 | 120000</b>. La tienda muestra $120.000 tachado y el letrero −21 %.</p>
+    <div class="grid2"><label>Precio único (COP) — si usas presentaciones puedes dejarlo vacío<input type="number" id="p-precio" min="0"></label>
+    <label>Precio antes de la oferta (opcional, solo precio único)<input type="number" id="p-antes" min="0" placeholder="Vacío = sin oferta"></label></div>
     <label>Stock disponible (vacío = sin control). Se descuenta al CONFIRMAR un pedido<input type="number" id="p-stock" min="0"></label>
 
-    <div class="sep">Ficha</div>
-    <label>Notas olfativas (una por línea)<textarea id="p-notas" placeholder="Salida: bergamota, pimienta&#10;Corazón: lavanda&#10;Fondo: vainilla, ámbar"></textarea></label>
-    <label>Detalle del producto<textarea id="p-detalle"></textarea></label>
+    <div class="sep">Ficha del producto (lo que ve el cliente)</div>
+    <label>¿A qué huele? — descripción del aroma (un párrafo por línea; **texto** = negrilla)<textarea id="p-detalle" placeholder="Imagina una limonada **súper fría** con manzana verde crujiente…"></textarea></label>
+    <div class="grid2"><label>Clima ideal<input type="text" id="p-clima" maxlength="40" placeholder="Calor · Templado"></label>
+    <label>Momento perfecto<input type="text" id="p-momento" maxlength="40" placeholder="Día · Oficina · Playa"></label></div>
+    <div class="grid2"><label>Concentración<input type="text" id="p-conc" maxlength="30" placeholder="EDT, EDP o Parfum" list="dl-conc"></label>
+    <label>Duración en la piel<input type="text" id="p-duracion" maxlength="40" placeholder="6 a 8 horas"></label></div>
+    <datalist id="dl-conc"><option value="EDT"><option value="EDP"><option value="Parfum"><option value="Extrait de Parfum"><option value="EDC"></datalist>
+    <label>Notas olfativas (una por línea)<textarea id="p-notas" placeholder="Salida: limón, manzana verde, cedro&#10;Corazón: bambú, jazmín, rosa blanca&#10;Fondo: cedro, almizcle, ámbar"></textarea></label>
+    <label>Por qué te va a gustar — destacados (uno por línea, "Título: texto"; máximo 6)<textarea id="p-destacados" placeholder="Frescura inconfundible: de los perfumes frescos más icónicos del mundo&#10;Ideal para el calor: perfecto para el día y las vacaciones&#10;Un clásico: lleva años siendo un éxito en ventas"></textarea></label>
     <label>Beneficios (uno por línea)<textarea id="p-beneficios"></textarea></label>
 
     <div class="sep">Fotos</div>
@@ -1347,7 +1358,8 @@ m='Hola '+n+', para despachar tu pedido *'+p.numero+'* el total es *'+fmt(p.tota
 else if(tipo==='enviado'){var tr=(aj.transportadoras||[]).find(function(x){return x.n===t;})||{};
 var u=tr.url?tr.url.split('{guia}').join(g?encodeURIComponent(g):''):'';
 m='Hola '+n+' 🚚 ¡Tu pedido *'+p.numero+'* ya va en camino!\n\nTransportadora: '+(t||'—')+(g?'\nGuía: '+g:'')+(u?'\nRastréalo aquí: '+u:'')
-+(pago==='CONTRA ENTREGA'?'\n\n💵 Recuerda tener listos '+fmt(p.total)+' para pagar al recibir.':'')+'\n\nCualquier novedad nos escribes por aquí.';}
++(pago==='CONTRA ENTREGA'?'\n\n💵 Recuerda tener listos '+fmt(p.total)+' para pagar al recibir.':'')
++(urlTienda()?'\n\n📦 Sigue tu pedido con tu número y tu cédula: '+urlTienda().replace(/#.*$/,'')+'#rastreo='+encodeURIComponent(p.numero):'')+'\n\nCualquier novedad nos escribes por aquí.';}
 else if(tipo==='entregado'){m='Hola '+n+' 🖤 ¿Te llegó bien tu pedido *'+p.numero+'*?\n\nSi te gustó, nos ayudas muchísimo dejando una reseña'+(urlTienda()?' aquí: '+urlTienda():'')+'. ¡Gracias por comprarnos!';}
 window.open('https://wa.me/'+tel+(m?'?text='+encodeURIComponent(m):''),'_blank');};
 
@@ -1405,7 +1417,7 @@ h+='</body></html>';return h;}
 
 // ===== PEDIDOS: pedido manual =====
 function listaCSV(t){return String(t||'').split(',').map(function(s){return s.trim();}).filter(Boolean);}
-function presArr(p){return String(p.presentaciones||'').split('\n').map(function(l){var m=/^(.+?)\s*\|\s*(\d+)$/.exec(l.trim());return m?{n:m[1],p:Number(m[2])}:null;}).filter(Boolean);}
+function presArr(p){return String(p.presentaciones||'').split('\n').map(function(l){var m=/^(.+?)\s*\|\s*(\d+)(?:\s*\|\s*\d+)?$/.exec(l.trim());/* el 3.er valor es el precio anterior */return m?{n:m[1],p:Number(m[2])}:null;}).filter(Boolean);}
 function npProd(){var id=$('np-prod').value;return (DATOS.productos||[]).find(function(x){return x.id===id;});}
 window.abrirNuevoPedido=function(){NP=[];var aj=DATOS.ajustes||{};
 ['np-nombre','np-tel','np-doc','np-correo','np-depto','np-ciudad','np-dir','np-nota','np-envio','np-desc'].forEach(function(i){$(i).value='';});
@@ -1613,6 +1625,7 @@ function renderProductos(){var l=DATOS.productos||[];
 $('tabla-productos').innerHTML=l.length?l.map(function(p){
 var st=(p.stock===null||p.stock===undefined)?'<span style="color:var(--soft)">—</span>':(p.stock<=0?'<span style="color:var(--bad);font-weight:700;">0 agotado</span>':'<span style="font-weight:600;">'+p.stock+'</span>');
 var pr=p.desde?'<span style="color:var(--soft);font-size:11px;">Desde</span> '+fmt(p.desde):fmt(p.precio);
+if(/\|\s*\d+\s*\|\s*\d+/.test(p.presentaciones||'')||(p.antes&&!p.presentaciones))pr+=' <span class="pill off" style="background:#FDE7E4;color:#B4443A">Oferta</span>';
 return '<tr><td>'+esc(p.id)+'</td><td>'+(p.marca?'<span class="sub">'+esc(p.marca)+'</span><br>':'')+esc(p.nombre)+'</td><td>'+esc(p.categoria)+'</td><td>'+esc(p.subcategoria||'—')+'</td><td class="money">'+pr+'</td><td>'+st+'</td><td><span class="pill '+(p.activo?'on':'off')+'">'+(p.activo?'Visible':'Oculto')+'</span></td><td>'+(tiene('inv.editar')?'<button class="btn-mini" onclick="abrirProducto(\''+jsq(p.id)+'\')">Editar</button>':'')+'</td><td>'+(tiene('inv.eliminar')?'<button class="btn-mini rojo" onclick="eliminarProducto(\''+jsq(p.id)+'\',\''+jsq(p.nombre)+'\')">Eliminar</button>':'')+'</td></tr>';
 }).join(''):'<tr><td colspan="9" style="color:var(--soft)">No hay productos.</td></tr>';}
 
@@ -1637,6 +1650,8 @@ $('p-id').value=rid;$('p-nombre').value=p?p.nombre:'';$('p-marca').value=p?(p.ma
 $('p-subcategoria').value=p?p.subcategoria:'';$('p-desc').value=p?p.descripcion:'';
 $('p-detalle').value=p?(p.detalle||''):'';$('p-beneficios').value=p?(p.beneficios||''):'';
 $('p-pres').value=p?(p.presentaciones||''):'';$('p-notas').value=p?(p.notas||''):'';
+$('p-antes').value=p&&p.antes?p.antes:'';$('p-clima').value=p?(p.clima||''):'';$('p-momento').value=p?(p.momento||''):'';
+$('p-conc').value=p?(p.concentracion||''):'';$('p-duracion').value=p?(p.duracion||''):'';$('p-destacados').value=p?(p.destacados||''):'';
 $('p-precio').value=(p&&!p.presentaciones)?p.precio:'';$('p-stock').value=(p&&p.stock!==null&&p.stock!==undefined)?p.stock:'';
 $('p-tag').value=p?p.tag:'';$('p-activo').checked=p?p.activo:true;fotoActual=p?p.foto:'';
 setLista('tono',p&&p.tonos?p.tonos.split(','):[]);setLista('color',p&&p.colores?p.colores.split(','):[]);
@@ -1664,9 +1679,12 @@ window.guardarProducto=function(e){e.preventDefault();
 if($('in-tono').value.trim())agregarTag('tono');if($('in-color').value.trim())agregarTag('color');
 var pres=$('p-pres').value.trim(),precio=Number($('p-precio').value)||0;
 if(!pres&&!precio)return toast('Pon un precio o al menos una presentación');
+var an=Number($('p-antes').value)||0;if(an&&!pres&&an<=precio)return toast('El precio anterior debe ser mayor que el precio de oferta');
 var prod={id:$('p-id').value.trim(),nombre:$('p-nombre').value.trim(),marca:$('p-marca').value.trim(),categoria:$('p-categoria').value.trim()||'General',
 subcategoria:$('p-subcategoria').value.trim(),descripcion:$('p-desc').value.trim(),detalle:$('p-detalle').value.trim(),
 beneficios:$('p-beneficios').value.trim(),precio:precio,presentaciones:pres,notas:$('p-notas').value.trim(),
+antes:Number($('p-antes').value)||0,clima:$('p-clima').value.trim(),momento:$('p-momento').value.trim(),concentracion:$('p-conc').value.trim(),
+duracion:$('p-duracion').value.trim(),destacados:$('p-destacados').value.trim(),
 foto:fotoActual,tag:$('p-tag').value.trim(),
 activo:$('p-activo').checked,colores:LISTAS.color.join(', '),tonos:LISTAS.tono.join(', '),
 stock:($('p-stock').value.trim()===''?'':(Number($('p-stock').value)||0))};
@@ -1698,7 +1716,7 @@ $('a-aviso-nacional').value=a.aviso_nacional||'';
 $('a-aviso-sinciudad').value=a.aviso_sinciudad||'';
 $('a-transp').value=a.transportadoras_txt||'';$('a-remitente').value=a.remitente_dir||'';
 $('a-corte').value=(a.hora_corte!=null?a.hora_corte:12);$('a-sabado').checked=a.despacha_sabado!==false;
-$('a-desp-auto').checked=!!a.despacho_auto;$('a-desp-tit').value=a.despacho_titulo||'';$('a-desp-txt').value=a.despacho_texto||'';
+$('a-desp-auto').checked=!!a.despacho_auto;$('a-ent-local').value=a.entrega_local||'1-2';$('a-ent-nac').value=a.entrega_nacional||'2-5';$('a-desp-tit').value=a.despacho_titulo||'';$('a-desp-txt').value=a.despacho_texto||'';
 $('a-aviso-rev').value=a.aviso_revision||'';$('a-tema').value=a.tema==='claro'?'claro':'oscuro';$('a-por-pag').value=a.por_pagina||12;$('a-tema-sel').checked=a.tema_selector!==false;
 $('logo-actual').innerHTML=DATOS.logo?'<img src="'+esc(DATOS.logo)+'" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);background:#1A1714;">':'<span style="color:var(--soft);font-size:12px;">Aún no hay logo.</span>';
 renderBanners();}
@@ -1748,7 +1766,7 @@ a.transportadoras=$('a-transp').value.trim();
 a.remitente_dir=$('a-remitente').value.trim();
 a.hora_corte=$('a-corte').value.trim();
 a.despacha_sabado=$('a-sabado').checked;
-a.despacho_auto=$('a-desp-auto').checked;a.despacho_titulo=$('a-desp-tit').value.trim();a.despacho_texto=$('a-desp-txt').value.trim();
+a.despacho_auto=$('a-desp-auto').checked;a.entrega_local=$('a-ent-local').value.trim();a.entrega_nacional=$('a-ent-nac').value.trim();a.despacho_titulo=$('a-desp-tit').value.trim();a.despacho_texto=$('a-desp-txt').value.trim();
 a.aviso_revision=$('a-aviso-rev').value.trim();a.tema=$('a-tema').value;a.por_pagina=$('a-por-pag').value.trim();a.tema_selector=$('a-tema-sel').checked;
 a.confianza=$('a-confianza').value.trim();
 a.nosotros=$('t-nosotros').value.trim();
