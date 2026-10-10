@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <script>try{var tm=localStorage.getItem('bb_tema');if(tm==="claro"||tm==="oscuro")document.documentElement.setAttribute('data-tema',tm);}catch(e){}</script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>Black Box Store · Fragancias 1.1</title>
 <meta name="description" content="Fragancias línea 1.1 para hombre y mujer. Envíos a toda Colombia y pedido directo por WhatsApp.">
@@ -379,9 +379,12 @@ footer b{color:var(--gtxt);letter-spacing:2px}
 .co-ok.visible{display:block}
 .co-ok-ic{width:64px;height:64px;border-radius:50%;background:rgba(63,185,80,.15);border:1.5px solid var(--ok);color:var(--ok);font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
 .co-ok h2{font-family:'Fraunces',serif;font-size:26px}
-.co-ok .num{font-family:'Fraunces',serif;font-size:30px;color:var(--gold2);margin:6px 0 12px}
+.co-ok .num-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--soft);font-weight:700;margin-top:18px}
+.co-ok .num{font-family:'Fraunces',serif;font-size:46px;line-height:1.1;color:var(--gold2);margin:6px 0 10px;letter-spacing:1px;word-break:break-word}
+.co-ok .copiar{background:none;border:1px solid var(--line2);border-radius:999px;padding:8px 16px;font-size:12px;font-weight:700;color:var(--soft);margin-bottom:20px}
 .co-ok p{font-size:14px;color:var(--soft);line-height:1.6;margin-bottom:22px}
-.co-ok .btn-wpp-solid{display:block}
+.co-ok .btn-wpp-solid{display:block;font-size:16px;padding:17px 24px}
+.co-ok .co-ok-nota{font-size:12px;margin:14px 0 0}
 .co-ok .link{display:block;margin:16px auto 0;background:none;border:0;color:var(--soft);font-size:13px;text-decoration:underline}
 
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--panel2);border:1px solid var(--gold);color:var(--ink);padding:12px 22px;border-radius:999px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:120;max-width:calc(100% - 32px);text-align:center}
@@ -392,8 +395,11 @@ footer b{color:var(--gtxt);letter-spacing:2px}
 .logo img[src=""]{display:none}
 /* Tema claro: dorado más profundo para que se lea bien sobre blanco */
 html[data-tema="claro"]{--gold2:#7A5712;--gtxt:#7A5712}
+/* iPhone hace zoom al tocar un campo con letra menor a 16px y la página queda corrida: con 16px se queda quieta */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media (pointer:coarse),(max-width:900px){input,select,textarea{font-size:16px!important}}
+.co,.co-scroll{overflow-x:hidden;touch-action:pan-y}
 </style>
-
 </head>
 <body>
 
@@ -591,8 +597,8 @@ html[data-tema="claro"]{--gold2:#7A5712;--gtxt:#7A5712}
             <div class="fila2"><label class="campo">Nombre *<input id="f-nombre" maxlength="40" autocomplete="given-name"></label>
               <label class="campo">Apellidos *<input id="f-apellido" maxlength="40" autocomplete="family-name"></label></div>
             <div class="fila2"><label class="campo">Celular / WhatsApp *<input type="tel" id="f-tel" maxlength="15" placeholder="3001234567" autocomplete="tel"></label>
-              <label class="campo">Cédula (opcional, para la guía)<input id="f-doc" inputmode="numeric" maxlength="15" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></label></div>
-            <label class="campo">Correo (opcional)<input type="email" id="f-email" maxlength="100" placeholder="Para enviarte la guía" autocomplete="email"></label>
+              <label class="campo">Cédula *<input id="f-doc" inputmode="numeric" maxlength="15" placeholder="Para la guía de envío" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></label></div>
+            <label class="campo">Correo electrónico *<input type="email" id="f-email" maxlength="100" placeholder="Para enviarte la guía" autocomplete="email" autocapitalize="none" spellcheck="false"></label>
           </div>
           <div class="panel"><h3>Dirección</h3>
             <div class="fila2"><label class="campo">Departamento *<select id="f-depto" onchange="refrescarEnvios()"></select></label>
@@ -628,9 +634,12 @@ html[data-tema="claro"]{--gold2:#7A5712;--gtxt:#7A5712}
     <div class="co-ok" id="co-ok">
       <div class="co-ok-ic">✓</div>
       <h2>¡Pedido registrado!</h2>
+      <div class="num-lbl">Tu número de pedido</div>
       <div class="num" id="co-ok-num"></div>
+      <button type="button" class="copiar" id="co-ok-copiar" onclick="copiarNumero()">Copiar número</button>
       <p id="co-ok-txt"></p>
-      <a class="btn-wpp-solid" id="co-ok-wa" target="_blank" rel="noopener">📲 Enviar pedido por WhatsApp</a>
+      <a class="btn-wpp-solid" id="co-ok-wa" rel="noopener">📲 Enviar pedido por WhatsApp</a>
+      <p class="co-ok-nota">Guarda tu número: con él consultas el estado de tu pedido.</p>
       <button type="button" class="link" onclick="cerrarCheckout()">Seguir viendo productos</button>
     </div>
   </div>
@@ -957,11 +966,11 @@ return '<div class="despacho"><div class="ic">⏰</div><div><b>Despacho estimado
 var NOMBRES_PASO=['Tu pedido','Entrega','Pago y confirmación'];
 var CLI=['f-nombre','f-apellido','f-tel','f-doc','f-email','f-depto','f-ciudad','f-dir','f-apto','f-barrio'];
 function cliGuardado(){try{var c=JSON.parse(localStorage.getItem('bb_cliente'));return c&&c['f-nombre']?c:null;}catch(e){return null;}}
-window.abrirCheckout=function(){if(!carrito.length)return;cerrarTodo();
+window.abrirCheckout=function(){if(!carrito.length)return;cerrarTodo();borrarUltimo();
 $('co-main').classList.remove('oculto');$('co-ok').classList.remove('visible');$('co-nav').classList.remove('oculto');$('pasos').classList.remove('oculto');
 initCheckout();irPaso(1);$('co').classList.add('visible');document.body.style.overflow='hidden';renderCarrito();};
 window.cerrarCheckout=function(){$('co').classList.remove('visible');document.body.style.overflow='';
-if($('co-ok').classList.contains('visible')){$('f-revisado').checked=false;$('f-acepto').checked=false;$('f-nota').value='';$('f-fact').checked=false;toggleFactura();}
+if($('co-ok').classList.contains('visible')){borrarUltimo();$('f-revisado').checked=false;$('f-acepto').checked=false;$('f-nota').value='';$('f-fact').checked=false;toggleFactura();}
 renderCarrito();};
 function irPaso(n){paso=n;
 document.querySelectorAll('.co-paso').forEach(function(e){e.style.display=Number(e.getAttribute('data-p'))===n?'':'none';});
@@ -979,7 +988,9 @@ else enviarPedido();};
 function errorEntrega(){function g(i){return $(i).value.trim();}
 if(!g('f-nombre')||!g('f-apellido'))return 'Escribe nombre y apellidos';
 if(g('f-tel').replace(/\D/g,'').length<7)return 'Revisa tu número de celular';
-if(g('f-email')&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(g('f-email')))return 'Revisa tu correo electrónico';
+if(g('f-doc').length<5)return 'Escribe la cédula de quien recibe';
+if(!g('f-email'))return 'Escribe tu correo electrónico';
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(g('f-email')))return 'Revisa tu correo electrónico';
 if(!g('f-depto'))return 'Elige el departamento';if(!g('f-ciudad'))return 'Escribe tu ciudad';if(!g('f-dir'))return 'Escribe la dirección';
 if(!ENV_VIS[envSel])return 'Elige la transportadora';return '';}
 function initCheckout(){var s=$('f-depto');
@@ -1052,12 +1063,31 @@ else m+='💰 *TOTAL PRODUCTOS: '+fmt(sub)+'*\n(El costo del envío se confirma 
 m+='👤 *CLIENTE*\n'+c.nombre+(c.doc?'\nCC/NIT: '+c.doc:'')+'\nTel: '+c.tel+(c.mail?'\nCorreo: '+c.mail:'')+'\n\n';
 m+='📍 *ENTREGA*\n'+c.dir+'\n'+c.ciu+', '+c.dep+'\nColombia\n\n🚚 Envío: '+envN+'\n💳 Pago: '+pagN+'\n';
 if(c.fact)m+='\n🧾 *FACTURACIÓN*\n'+c.fact+'\n';if(c.nota)m+='\n📝 Nota: '+c.nota;return m;}
-// Pantalla final: el botón de WhatsApp siempre queda disponible, aunque el navegador bloquee la pestaña nueva
-function exito(num,link,abierto,registrado){$('co-main').classList.add('oculto');$('co-nav').classList.add('oculto');$('pasos').classList.add('oculto');
-$('co-ok').classList.add('visible');$('co-ok-num').textContent=num;$('co-ok-wa').href=link;
+/* Pantalla final con el número de pedido.
+ * No se abre una pestaña nueva: en iPhone y en los navegadores de Instagram/Facebook esa pestaña quedaba
+ * en blanco ("Preparando tu pedido…") y el cliente perdía la página. El botón abre WhatsApp desde esta misma
+ * página, y el pedido queda guardado unas horas en el dispositivo: si el cliente vuelve atrás o recarga,
+ * ve otra vez su número y el botón. */
+var ULT_HORAS=6;
+function esMovil(){try{return matchMedia('(pointer:coarse)').matches;}catch(e){return false;}}
+function guardarUltimo(o){try{localStorage.setItem('bb_ultimo',JSON.stringify(o));}catch(e){}}
+function borrarUltimo(){try{localStorage.removeItem('bb_ultimo');}catch(e){}}
+function leerUltimo(){try{var o=JSON.parse(localStorage.getItem('bb_ultimo'));
+return (o&&o.num&&o.link&&Date.now()-o.t<ULT_HORAS*36e5)?o:null;}catch(e){return null;}}
+function exito(num,link,registrado){$('co-main').classList.add('oculto');$('co-nav').classList.add('oculto');$('pasos').classList.add('oculto');
+$('co-ok').classList.add('visible');$('co-ok-num').textContent=num;
+var b=$('co-ok-wa');b.href=link;
+// En computador WhatsApp Web se abre aparte para no perder la tienda; en celular abre la app directamente
+if(esMovil())b.removeAttribute('target');else b.setAttribute('target','_blank');
+$('co-ok-copiar').style.display=registrado?'':'none';
 $('co-ok-txt').textContent=!registrado?'Tuvimos un problema de conexión, pero no pierdes tu pedido: envíanoslo por WhatsApp y lo registramos allá.'
-:(abierto?'Se abrió WhatsApp en otra pestaña con tu pedido. Si no lo ves, toca el botón:':'Último paso: toca el botón para enviarnos el pedido por WhatsApp. Sin ese mensaje no podemos procesarlo.');
+:'Último paso: toca el botón verde para enviarnos el pedido por WhatsApp. Sin ese mensaje no podemos confirmarlo.';
 $('co-scroll').scrollTop=0;}
+function mostrarExito(o){cerrarTodo();$('co').classList.add('visible');document.body.style.overflow='hidden';exito(o.num,o.link,o.ok);renderCarrito();}
+window.copiarNumero=function(){var n=$('co-ok-num').textContent,b=$('co-ok-copiar');
+function listo(){b.textContent='✓ Copiado';setTimeout(function(){b.textContent='Copiar número';},2000);}
+if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(n).then(listo,function(){toast('Tu número es '+n);});
+else toast('Tu número es '+n);};
 function enviarPedido(){if(!carrito.length)return;function g(i){return $(i).value.trim();}
 var e=errorEntrega();if(e){irPaso(2);return toast(e);}
 if(!$('f-acepto').checked)return toast('Debes autorizar el uso de tus datos para enviar el pedido');
@@ -1069,21 +1099,19 @@ fact=fn+' | NIT/CC: '+fnit+' | '+fem+(g('f-ftel')?' | Tel: '+g('f-ftel'):'')+' |
 var cli={nombre:g('f-nombre')+' '+g('f-apellido'),doc:g('f-doc'),tel:g('f-tel'),mail:g('f-email'),dir:dirFull,ciu:g('f-ciudad'),dep:g('f-depto'),nota:g('f-nota'),fact:fact};
 try{if($('f-recordar').checked){var o={};CLI.forEach(function(k){o[k]=g(k);});localStorage.setItem('bb_cliente',JSON.stringify(o));}else localStorage.removeItem('bb_cliente');}catch(x){}
 var items=carrito.map(function(i){return {id:i.id,pres:i.pres||'',color:i.color||'',tono:i.tono||'',qty:i.qty};});
-// Se abre la pestaña YA (dentro del clic) para que el navegador no la bloquee
-var w=window.open('','_blank');if(w){try{w.document.write('<p style="font-family:sans-serif;padding:40px;font-size:16px;">Preparando tu pedido…</p>');}catch(x){}}
 var btn=$('btn-sig');btn.disabled=true;btn.textContent='Registrando tu pedido…';
 function fin(){btn.disabled=false;btn.textContent='📲 Enviar pedido por WhatsApp';}
 llamar('registrarPedido',{nombre:cli.nombre,telefono:cli.tel,documento:cli.doc,correo:cli.mail,ciudad:cli.ciu,departamento:cli.dep,direccion:dirFull,
 nota:cli.nota,factura:fact,metodoEnvio:env.n,metodoPago:pag.n,items:items},function(r){fin();
-if(!r||!r.ok){if(w)w.close();return toast('⚠️ '+((r&&r.error)||'No se pudo registrar el pedido'));}
+if(!r||!r.ok)return toast('⚠️ '+((r&&r.error)||'No se pudo registrar el pedido'));
 // El mensaje usa los precios calculados por el servidor, no los del navegador
 var link=wa(mensaje(r.numero,r.items,r.subtotal,r.envio,r.total,r.metodoEnvio,r.metodoPago,cli));
-var ab=!!(w&&!w.closed);if(ab)w.location.href=link;carrito=[];renderCarrito();exito(r.numero,link,ab,true);},
+carrito=[];renderCarrito();guardarUltimo({num:r.numero,link:link,ok:true,t:Date.now()});exito(r.numero,link,true);},
 function(){fin();
 // Sin conexión con el servidor: el pedido no quedó en la hoja, pero el cliente igual puede enviarlo
 var its=carrito.map(function(i){return {nombre:i.nombre+(i.pres?' — '+i.pres:''),color:i.color,tono:i.tono,qty:i.qty,precio:i.precio};});
 var sub=total(),c=env.c||0,link=wa(mensaje('PED-S/N',its,sub,c,sub+c,env.n,pag.n,cli));
-var ab=!!(w&&!w.closed);if(ab)w.location.href=link;exito('Pedido sin número',link,ab,false);});}
+guardarUltimo({num:'Pedido sin número',link:link,ok:false,t:Date.now()});exito('Pedido sin número',link,false);});}
 
 /* ===== Arranque ===== */
 function avisoRevision(){var l=String(A.aviso_revision||'').split('\n').map(function(s){return s.trim();}).filter(Boolean);
@@ -1091,7 +1119,9 @@ $('aviso-rev').innerHTML=l.map(function(s){return '<p>'+esc(s).replace(/\*\*([^*
 function logo(){var i=$('logo-img');if(D.logo){i.src=D.logo;i.style.display='';}else i.style.display='none';}
 function pintarTodo(){aplicarTema();logo();sanear();hero();confianza();fabs();paginas();marcas();renderCat();renderCarrito();renderRes();avisoRevision();}
 var anuncioListo=false;
-function arrancar(d){aplicarDatos(d);pintarTodo();if(!anuncioListo){anuncio();anuncioListo=true;}}
+function arrancar(d){aplicarDatos(d);pintarTodo();if(!anuncioListo){anuncio();anuncioListo=true;
+// Si el cliente acaba de hacer un pedido y volvió (atrás o recarga), le mostramos de nuevo su número
+var u=leerUltimo();if(u)mostrarExito(u);}}
 if(window.__DATA__)arrancar(window.__DATA__);
 else if(window.__API__){var cache=null;try{cache=JSON.parse(localStorage.getItem('bb_datos'));}catch(e){}
 if(cache)arrancar(cache);else $('grid').innerHTML='<p class="vacio">Cargando catálogo…</p>';

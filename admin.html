@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <script>window.__API__='https://script.google.com/macros/s/AKfycbw5BrW7MdfdmXDg-ER5M_d5cSbX5nXNTtr1CADahVG9LdqR1UpN8L_sboXfbwS7-z2U/exec';window.__TIENDA__=location.href.replace(/admin\.html.*$/,'');</script>
 
@@ -259,6 +259,33 @@ tbody tr:hover{background:#FBFAF6}
 .modal-box h3{font-family:'Inter',sans-serif;font-weight:700}
 .est-tabs .et{border-radius:9px}
 .prod-head h3{font-size:16px}
+/* Inicio: tarjetas de módulos */
+.modulos{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.modulo{display:flex;gap:14px;align-items:flex-start;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--sombra);transition:.15s}
+.modulo:hover{border-color:var(--gold);transform:translateY(-1px)}
+.modulo .mi{width:42px;height:42px;border-radius:11px;background:var(--gsoft);color:var(--gtxt);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.modulo .mi .ic{width:22px;height:22px}
+.modulo b{display:block;font-size:15px;color:var(--ink)}
+.modulo span{display:block;font-size:12.5px;color:var(--soft);margin-top:3px;line-height:1.45}
+.modulo em{display:inline-block;font-style:normal;margin-top:8px;font-size:11.5px;font-weight:700;color:var(--gtxt);background:var(--gsoft);border-radius:999px;padding:3px 10px}
+/* Logística: tablero por estado */
+.tablero{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:start}
+@media(max-width:900px){.tablero{grid-template-columns:1fr}}
+.col-t{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:12px}
+.col-t h4{font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--soft);margin:2px 4px 10px;display:flex;justify-content:space-between}
+.tj{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin-bottom:8px;font-size:13px;line-height:1.45}
+.tj:hover{border-color:var(--gold)}
+.tj b{font-size:14px}.tj .sub{font-size:12px}
+.tj .fila{display:flex;justify-content:space-between;gap:8px;align-items:center}
+/* Usuarios: elegir módulos */
+.mods-sel{margin:4px 0 12px}
+.mods-tit{display:block;font-size:13px;font-weight:600;margin-bottom:8px}
+#u-mods{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#u-mods label{display:flex;flex-direction:row;align-items:flex-start;gap:8px;border:1px solid var(--line);border-radius:10px;padding:9px 10px;font-size:13px;cursor:pointer}
+#u-mods label small{display:block;color:var(--soft);font-size:11.5px;font-weight:400}
+#u-mods input{width:auto;margin-top:2px}
+.mod-chip{display:inline-block;font-size:11px;font-weight:600;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin:1px 2px 1px 0}
+@media (pointer:coarse),(max-width:900px){input,select,textarea{font-size:16px!important}}
 </style>
 </head>
 <body>
@@ -278,14 +305,19 @@ tbody tr:hover{background:#FBFAF6}
   <aside class="side" id="side">
     <div class="side-logo"><img id="adm-logo" src="" alt=""><div><b>Black<span>Box</span></b><small>Panel de administración</small></div></div>
     <nav class="side-nav">
-      <div class="side-tit">Operación</div>
-      <button class="tab activo" data-v="resumen" onclick="verTab('resumen')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg><span>Resumen</span></button>
+      <button class="tab activo" data-v="inicio" onclick="verTab('inicio')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/></svg><span>Inicio</span></button>
+      <div class="side-tit" data-m="comercial">Comercial</div>
+      <button class="tab" data-v="resumen" onclick="verTab('resumen')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg><span>Resumen</span></button>
       <button class="tab" data-v="pedidos" onclick="verTab('pedidos')"><svg class="ic" viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/></svg><span>Pedidos</span><em class="badge" id="ped-pend"></em></button>
       <button class="tab" data-v="clientes" onclick="verTab('clientes')"><svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 11a3 3 0 1 0 0-6M21.5 20a5.5 5.5 0 0 0-4-5.3"/></svg><span>Clientes</span></button>
-      <div class="side-tit">Catálogo</div>
-      <button class="tab" data-v="productos" onclick="verTab('productos')"><svg class="ic" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg><span>Productos</span></button>
       <button class="tab" data-v="resenas" onclick="verTab('resenas')"><svg class="ic" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9L12 3Z"/></svg><span>Reseñas</span><em class="badge" id="res-pend"></em></button>
-      <div class="side-tit">Configuración</div>
+      <div class="side-tit" data-m="logistica">Logística</div>
+      <button class="tab" data-v="despachos" onclick="verTab('despachos')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Despachos</span><em class="badge" id="desp-pend"></em></button>
+      <div class="side-tit" data-m="inventario">Inventario</div>
+      <button class="tab" data-v="productos" onclick="verTab('productos')"><svg class="ic" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg><span>Productos y stock</span></button>
+      <div class="side-tit" data-m="cartera">Cartera</div>
+      <button class="tab" data-v="cartera" onclick="verTab('cartera')"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg><span>Cuentas por cobrar</span><em class="badge" id="car-pend"></em></button>
+      <div class="side-tit" data-m="configuracion">Configuración</div>
       <button class="tab" data-v="ajustes" onclick="verTab('ajustes')"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg><span>Ajustes</span></button>
       <button class="tab oculto" data-v="usuarios" id="tab-usuarios" onclick="verTab('usuarios')"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Usuarios</span></button>
     </nav>
@@ -299,7 +331,7 @@ tbody tr:hover{background:#FBFAF6}
   <div class="cuerpo">
     <header class="topbar">
       <button class="hamb" onclick="toggleSide(true)" aria-label="Menú"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-      <div class="top-tit"><h1 id="vista-tit">Resumen</h1><p id="vista-sub">Así va tu negocio hoy</p></div>
+      <div class="top-tit"><h1 id="vista-tit">Inicio</h1><p id="vista-sub">Tus módulos</p></div>
       <div class="top-acc">
         <a class="btn-top" id="ver-tienda" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span>Ver tienda</span></a>
         <button class="btn-top" onclick="cargarDatos()"><svg class="ic" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.9-3.9M4 4v4h4M4 13a8 8 0 0 0 14.9 3.9M20 20v-4h-4"/></svg><span>Actualizar</span></button>
@@ -307,6 +339,26 @@ tbody tr:hover{background:#FBFAF6}
     </header>
   <div class="main">
     <div class="cargando" id="cargando">Cargando datos…</div>
+
+    <div class="vista" id="v-inicio">
+      <h3 class="tit-sec" id="ini-hola"></h3>
+      <div class="modulos" id="ini-modulos"></div>
+    </div>
+
+    <div class="vista" id="v-despachos">
+      <p class="ayuda">Pedidos confirmados que hay que empacar y despachar. Toca un pedido para cambiar su estado, poner la transportadora y la guía, o imprimir el rótulo.</p>
+      <div class="tablero" id="tablero-desp"></div>
+    </div>
+
+    <div class="vista" id="v-cartera">
+      <div class="kpis" id="car-kpis"></div>
+      <div class="bloque">
+        <div class="est-tabs" id="car-tabs"></div>
+        <div class="scroll"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Estado</th><th>Pago</th><th>Total</th><th>Días</th><th></th><th></th></tr></thead>
+        <tbody id="tabla-cartera"></tbody></table></div>
+        <p class="ayuda" style="margin-top:14px;margin-bottom:0;"><b>Por cobrar</b>: pedidos sin pago confirmado. <b>Contra entrega</b>: el dinero lo recoge la transportadora; márcalo como PAGADO cuando te lo consigne. Los cancelados no cuentan.</p>
+      </div>
+    </div>
 
     <div class="vista" id="v-resumen">
       <h3 class="tit-sec">Pedidos pendientes por estado</h3>
@@ -356,9 +408,9 @@ tbody tr:hover{background:#FBFAF6}
 
     <div class="vista" id="v-usuarios"><div class="bloque">
       <div class="prod-head"><h3 style="margin:0;">Usuarios del panel</h3><button class="btn-nuevo" onclick="abrirUsuario()">+ Nuevo usuario</button></div>
-      <p class="ayuda">Solo tú (DUEÑO) ves esta sección. Los usuarios que crees aquí tienen rol <b>ADMIN</b>: manejan pedidos, productos, reseñas y ajustes, pero no pueden ver ni tocar usuarios.<br>
+      <p class="ayuda">Solo tú (DUEÑO) ves esta sección. A cada usuario le asignas los <b>módulos</b> que puede usar (Comercial, Logística, Inventario, Cartera, Configuración); no ve ni recibe datos de los demás. Nadie más que tú puede gestionar usuarios.<br>
       Si alguien deja de trabajar contigo, <b>desactívalo o elimínalo</b>: su sesión se cierra en ese momento.</p>
-      <div class="scroll"><table><thead><tr><th>Usuario</th><th>Nombre</th><th>Rol</th><th>Estado</th><th>Último ingreso</th><th>Creado por</th><th></th><th></th></tr></thead>
+      <div class="scroll"><table><thead><tr><th>Usuario</th><th>Nombre</th><th>Rol</th><th>Módulos</th><th>Estado</th><th>Último ingreso</th><th>Creado por</th><th></th><th></th></tr></thead>
       <tbody id="tabla-usuarios"></tbody></table></div></div></div>
 
     <div class="vista" id="v-ajustes">
@@ -602,7 +654,8 @@ tbody tr:hover{background:#FBFAF6}
     <label>Nombre completo<input type="text" id="u-nombre" maxlength="60" placeholder="María López"></label>
     <label id="u-clave-lbl">Contraseña<input type="text" id="u-clave" maxlength="64" autocomplete="new-password"></label>
     <p class="reglas">Mínimo 8 caracteres, con letras y números, sin contener el usuario. Entrégasela a la persona por un medio privado; podrá cambiarla en "Mi contraseña".</p>
-    <label>Rol<input type="text" value="ADMIN" readonly></label>
+    <div class="mods-sel" id="u-mods-blq"><span class="mods-tit">Módulos a los que tiene acceso</span><div id="u-mods"></div>
+      <p class="reglas">Elige al menos uno. Ejemplo: un empacador solo necesita <b>Logística</b>.</p></div>
     <label class="check" id="u-activo-lbl"><input type="checkbox" id="u-activo" checked> Activo (puede entrar al panel)</label>
     <div class="modal-acciones"><button type="button" class="btn-cancelar" onclick="cerrarUsuario()">Cancelar</button><button type="submit" class="btn-gold" id="btn-usr">Guardar</button></div>
   </form>
@@ -645,8 +698,22 @@ var VENTA=['CONFIRMADO','EMPACADO','ENVIADO','ENTREGADO'];
 var ESTADOS=['NUEVO','CONFIRMADO','EMPACADO','ENVIADO','ENTREGADO','CANCELADO'];
 var SIGUIENTE={NUEVO:'CONFIRMADO',CONFIRMADO:'EMPACADO',EMPACADO:'ENVIADO',ENVIADO:'ENTREGADO'};
 var ABIERTOS=['NUEVO','CONFIRMADO','EMPACADO'];
-var fEst='ACTIVOS',PD=null,NP=[];
+var fEst='ACTIVOS',PD=null,NP=[],fCar='COBRAR';
 function $(i){return document.getElementById(i);}
+
+/* ===== MÓDULOS Y PERMISOS =====
+ * Cada usuario ve solo las pestañas de sus módulos. Esto es solo la vista: el servidor también
+ * filtra los datos y rechaza las acciones de módulos que la persona no tiene. */
+var MODS=[
+{k:'comercial',t:'Comercial',d:'Ventas, pedidos, clientes y reseñas',tabs:['resumen','pedidos','clientes','resenas'],ic:'<path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/>'},
+{k:'logistica',t:'Logística',d:'Empaque, despacho y guías',tabs:['despachos'],ic:'<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>'},
+{k:'inventario',t:'Inventario',d:'Productos, precios y stock',tabs:['productos'],ic:'<path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5M12 13v8"/>'},
+{k:'cartera',t:'Cartera',d:'Pagos pendientes y contra entrega',tabs:['cartera'],ic:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>'},
+{k:'configuracion',t:'Configuración',d:'Tienda, envíos, textos y usuarios',tabs:['ajustes','usuarios'],ic:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>'}];
+function misMods(){var y=(DATOS&&DATOS.yo)||{};return Array.isArray(y.modulos)?y.modulos:[];}
+function puede(){var m=misMods();for(var i=0;i<arguments.length;i++)if(m.indexOf(arguments[i])>=0)return true;return false;}
+function tabPermitida(v){if(v==='inicio')return true;if(v==='usuarios')return esDueno();
+return MODS.some(function(m){return m.tabs.indexOf(v)>=0&&puede(m.k);});}
 function fmt(n){return '$'+Number(n||0).toLocaleString('es-CO');}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 // Texto dentro de onclick="f('...')": primero se escapa para JS y luego para HTML
@@ -675,8 +742,8 @@ function sesionVencida(){toast('Sesión vencida, entra de nuevo');cerrarSesion()
 // Recarga sin el aviso de "Cargando" (no toca Ajustes para no borrar lo que estás escribiendo)
 function recargarSilencioso(){if(!token)return;
 google.script.run.withSuccessHandler(function(r){if(!r)return;if(r.auth===false)return sesionVencida();DATOS=r;
-renderYo();renderResumen();renderPedidos();renderProductos();renderResenas();renderUsuarios();renderClientes();renderCategorias();
-if(!esDueno()&&$('v-usuarios').classList.contains('activa'))verTab('resumen');})
+renderYo();renderResumen();renderPedidos();renderProductos();renderResenas();renderUsuarios();renderClientes();renderCategorias();renderModulos();
+var a=document.querySelector('.tab.activo'),v=a?a.getAttribute('data-v'):'inicio';if(!tabPermitida(v))verTab('inicio');})
 .withFailureHandler(function(){}).adminDatos(token);}
 
 /* ===== TARIFAS DE ENVÍO (tabla editable que se guarda como "Nombre | Descripción | Costo | Zona | Activo") ===== */
@@ -747,8 +814,10 @@ var est=u.activo?'<span class="pill on">Activo</span>':'<span class="pill off">I
 if(u.sinCifrar)est+=' <span class="pill off" title="Se cifra cuando esa persona entre por primera vez">clave sin cifrar</span>';
 var ed=(!dueno||propio)?'<button class="btn-mini" onclick="abrirUsuario(\''+jsq(u.usuario)+'\')">Editar</button>':'';
 var el=(!dueno&&!propio)?'<button class="btn-mini rojo" onclick="eliminarUsuario(\''+jsq(u.usuario)+'\')">Eliminar</button>':'';
-return '<tr><td><b>'+esc(u.usuario)+'</b>'+(propio?' <span style="color:var(--soft);font-size:11px;">(tú)</span>':'')+'</td><td>'+esc(u.nombre)+'</td><td><span class="rol '+esc(u.rol)+'">'+esc(u.rol)+'</span></td><td>'+est+'</td><td style="font-size:12px;color:var(--soft)">'+fechaHora(u.ultimo)+'</td><td style="font-size:12px;color:var(--soft)">'+esc(u.creadoPor||'—')+'</td><td>'+ed+'</td><td>'+el+'</td></tr>';
-}).join(''):'<tr><td colspan="8" style="color:var(--soft)">Sin usuarios.</td></tr>';}
+var mo=dueno?'<span class="sub">Todos</span>':(u.todos?'<span class="pill off" title="Usuario creado antes de los módulos: edítalo y elige sus módulos">Todos · sin asignar</span>'
+:(u.modulos||[]).map(function(k){var m=MODS.find(function(x){return x.k===k;});return '<span class="mod-chip">'+esc(m?m.t:k)+'</span>';}).join(''));
+return '<tr><td><b>'+esc(u.usuario)+'</b>'+(propio?' <span style="color:var(--soft);font-size:11px;">(tú)</span>':'')+'</td><td>'+esc(u.nombre)+'</td><td><span class="rol '+esc(u.rol)+'">'+esc(u.rol)+'</span></td><td>'+mo+'</td><td>'+est+'</td><td style="font-size:12px;color:var(--soft)">'+fechaHora(u.ultimo)+'</td><td style="font-size:12px;color:var(--soft)">'+esc(u.creadoPor||'—')+'</td><td>'+ed+'</td><td>'+el+'</td></tr>';
+}).join(''):'<tr><td colspan="9" style="color:var(--soft)">Sin usuarios.</td></tr>';}
 
 window.abrirUsuario=function(usr){var u=usr?(DATOS.usuarios||[]).find(function(x){return x.usuario===usr;}):null;
 usrEdit=u?u.usuario:'';var propio=u&&u.usuario===DATOS.yo.usuario;
@@ -757,6 +826,10 @@ $('u-usuario').value=u?u.usuario:'';$('u-usuario').readOnly=!!u;$('u-reglas-usr'
 $('u-nombre').value=u?u.nombre:'';$('u-clave').value='';
 $('u-clave-lbl').firstChild.textContent=u?'Nueva contraseña (vacío = no cambiarla)':'Contraseña';
 $('u-activo').checked=u?u.activo:true;$('u-activo-lbl').style.display=propio?'none':'';
+// El dueño siempre tiene todo; a un usuario viejo "sin asignar" no se le marca nada para obligar a elegir
+var dueno=u&&u.rol==='DUEÑO',sel=(u&&!u.todos)?(u.modulos||[]):[];
+$('u-mods-blq').style.display=dueno?'none':'';
+$('u-mods').innerHTML=MODS.map(function(m){return '<label><input type="checkbox" value="'+m.k+'"'+(sel.indexOf(m.k)>=0?' checked':'')+'><span>'+esc(m.t)+'<small>'+esc(m.d)+'</small></span></label>';}).join('');
 $('modal-usr').classList.add('visible');};
 window.cerrarUsuario=function(){$('modal-usr').classList.remove('visible');$('u-clave').value='';};
 
@@ -766,12 +839,15 @@ if(!USR_RE.test(usr))return toast('Usuario: 3 a 30 caracteres, minúsculas, núm
 if(nuevo&&(DATOS.usuarios||[]).some(function(x){return x.usuario===usr;}))return toast('Ese usuario ya existe');
 if(nom.length<2)return toast('Escribe el nombre de la persona');
 if(nuevo||cl){var ec=errorClave(cl,usr);if(ec)return toast(ec);}
+var mods=Array.prototype.map.call(document.querySelectorAll('#u-mods input:checked'),function(i){return i.value;});
+var ed=usrEdit?(DATOS.usuarios||[]).find(function(x){return x.usuario===usrEdit;}):null;
+if(!(ed&&ed.rol==='DUEÑO')&&!mods.length)return toast('Elige al menos un módulo');
 var b=$('btn-usr');b.disabled=true;b.textContent='Guardando…';
 google.script.run.withSuccessHandler(function(r){b.disabled=false;b.textContent='Guardar';
 if(!r||r.auth===false)return sesionVencida();if(!r.ok)return toast('⚠️ '+(r.error||'Error'));
 cerrarUsuario();toast(nuevo?'✅ Usuario creado':'✅ Usuario actualizado');recargarSilencioso();})
 .withFailureHandler(function(){b.disabled=false;b.textContent='Guardar';toast('⚠️ Error de conexión');})
-.adminGuardarUsuario(token,{nuevo:nuevo,usuario:usr,nombre:nom,clave:cl,activo:$('u-activo').checked});};
+.adminGuardarUsuario(token,{nuevo:nuevo,usuario:usr,nombre:nom,clave:cl,activo:$('u-activo').checked,modulos:mods});};
 
 window.eliminarUsuario=function(usr){
 if(!confirm('¿Eliminar el usuario "'+usr+'"?\n\nPerderá el acceso de inmediato. Si solo es temporal, mejor edítalo y desmárcalo como Activo.'))return;
@@ -799,8 +875,60 @@ google.script.run.withSuccessHandler(function(r){$('cargando').style.display='no
 if(!r||r.auth===false)return sesionVencida();DATOS=r;renderTodo();})
 .withFailureHandler(function(){$('cargando').textContent='Error cargando datos. Recarga la página.';}).adminDatos(token);};
 
-function renderTodo(){renderYo();renderResumen();renderPedidos();renderProductos();renderResenas();renderAjustes();renderUsuarios();renderClientes();renderCategorias();
-var a=document.querySelector('.tab.activo');verTab(a?a.getAttribute('data-v'):'resumen');}
+function renderTodo(){renderYo();renderResumen();renderPedidos();renderProductos();renderResenas();renderAjustes();renderUsuarios();renderClientes();renderCategorias();renderModulos();
+var a=document.querySelector('.tab.activo');verTab(a?a.getAttribute('data-v'):'inicio');}
+function renderModulos(){renderInicio();renderDespachos();renderCartera();}
+
+/* ===== INICIO: tarjetas de los módulos de la persona ===== */
+function pendientesDe(k){var ped=DATOS.pedidos||[];
+if(k==='comercial'){var n=ped.filter(function(p){return p.estado==='NUEVO';}).length;return n?n+' por confirmar':'';}
+if(k==='logistica'){var d=ped.filter(function(p){return p.estado==='CONFIRMADO'||p.estado==='EMPACADO';}).length;return d?d+' por despachar':'';}
+if(k==='cartera'){var c=carteraLista('COBRAR').length;return c?c+' por cobrar':'';}
+if(k==='inventario'){var a=(DATOS.productos||[]).filter(function(p){return p.stock!==null&&p.stock!==undefined&&p.stock<=0;}).length;return a?a+' agotado(s)':'';}
+return '';}
+function renderInicio(){var y=(DATOS&&DATOS.yo)||{},n=String(y.nombre||y.usuario||'').trim().split(/\s+/)[0];
+$('ini-hola').textContent='Hola'+(n?' '+n:'')+', ¿qué vas a hacer hoy?';
+var l=MODS.filter(function(m){return puede(m.k);});
+$('ini-modulos').innerHTML=l.length?l.map(function(m){var p=pendientesDe(m.k),t=m.tabs.filter(tabPermitida)[0]||'inicio';
+return '<button class="modulo" onclick="verTab(\''+t+'\')"><div class="mi"><svg class="ic" viewBox="0 0 24 24">'+m.ic+'</svg></div><div><b>'+esc(m.t)+'</b><span>'+esc(m.d)+'</span>'+(p?'<em>'+esc(p)+'</em>':'')+'</div></button>';}).join('')
+:'<p class="ayuda">Tu usuario aún no tiene módulos asignados. Pídele acceso al dueño.</p>';}
+
+/* ===== LOGÍSTICA: tablero de despachos ===== */
+function renderDespachos(){var ped=DATOS.pedidos||[];
+var cols=[['CONFIRMADO','Por empacar'],['EMPACADO','Por despachar'],['ENVIADO','En camino']];
+var nd=ped.filter(function(p){return p.estado==='CONFIRMADO'||p.estado==='EMPACADO';}).length;$('desp-pend').textContent=nd||'';
+$('tablero-desp').innerHTML=cols.map(function(c){var l=ped.filter(function(p){return p.estado===c[0];});
+return '<div class="col-t"><h4><span>'+c[1]+'</span><span>'+l.length+'</span></h4>'+(l.length?l.map(function(p){
+return '<button class="tj" onclick="abrirPedido(\''+jsq(p.numero)+'\')"><div class="fila"><b>'+esc(p.numero)+'</b>'+diasHtml(p)+'</div>'
++esc(p.nombre)+'<br><span class="sub">'+esc(p.ciudad||'—')+(p.departamento?', '+esc(p.departamento):'')+' · '+p.articulos+' und.</span>'
++'<div class="fila" style="margin-top:6px">'+pagoPill(p.pago)+(p.guia?'<span class="sub">'+esc(p.transportadora)+' · '+esc(p.guia)+'</span>':'')+'</div></button>';}).join(''):'<p class="sub" style="padding:6px 4px">Nada aquí.</p>')+'</div>';}).join('');}
+
+/* ===== CARTERA: cuentas por cobrar ===== */
+function carteraLista(t){return (DATOS.pedidos||[]).filter(function(p){if(p.estado==='CANCELADO'||p.pago==='PAGADO')return false;
+if(t==='COBRAR')return p.pago==='PENDIENTE';if(t==='CONTRA')return p.pago==='CONTRA ENTREGA';return true;});}
+window.filtrarCar=function(t){fCar=t;renderCartera();};
+function renderCartera(){var pen=carteraLista('COBRAR'),ce=carteraLista('CONTRA');
+function suma(l){return l.reduce(function(s,p){return s+p.total;},0);}
+var ceEnt=ce.filter(function(p){return p.estado==='ENTREGADO';});
+$('car-pend').textContent=pen.length||'';
+$('car-kpis').innerHTML=kpi(fmt(suma(pen)),'Por cobrar ('+pen.length+')',pen.length?'alerta':'')+kpi(fmt(suma(ce)),'Contra entrega ('+ce.length+')')
++kpi(fmt(suma(ceEnt)),'Entregados: la transportadora debe consignar ('+ceEnt.length+')')+kpi(fmt(suma(pen)+suma(ce)),'Total en cartera');
+var T=[['COBRAR','Por cobrar',pen.length],['CONTRA','Contra entrega',ce.length],['TODOS','Todo',pen.length+ce.length]];
+$('car-tabs').innerHTML=T.map(function(t){return '<button class="et'+(fCar===t[0]?' on':'')+'" onclick="filtrarCar(\''+t[0]+'\')">'+t[1]+'<b>'+t[2]+'</b></button>';}).join('');
+var l=carteraLista(fCar).slice().sort(function(a,b){return (a.fecha||0)-(b.fecha||0);});
+$('tabla-cartera').innerHTML=l.length?l.map(function(p){var d=diasDe(p);
+return '<tr><td><b>'+esc(p.numero)+'</b><br><span class="sub">'+fechaHora(p.fecha)+'</span></td><td>'+esc(p.nombre)+'<br><span class="sub">'+esc(p.telefono)+'</span></td>'
++'<td>'+stPill(p.estado)+'</td><td>'+pagoPill(p.pago)+'</td><td class="money">'+fmt(p.total)+'</td>'
++'<td><span class="dias '+(d>=8?'rojo':(d>=4?'ambar':''))+'">'+d+' d</span></td>'
++'<td><button class="btn-mini" onclick="abrirPedido(\''+jsq(p.numero)+'\')">Ver</button></td>'
++'<td>'+(puede('comercial','cartera')?'<button class="btn-mini verde" onclick="marcarPagado(\''+jsq(p.numero)+'\')">✓ Pagado</button>':'')+'</td></tr>';}).join('')
+:'<tr><td colspan="8" class="sub">No hay nada pendiente por cobrar. 🙌</td></tr>';}
+window.marcarPagado=function(num){var p=(DATOS.pedidos||[]).find(function(x){return x.numero===num;});if(!p)return;
+if(!confirm('¿Confirmas que ya recibiste el dinero del pedido '+num+' ('+fmt(p.total)+')?'))return;
+var c={estado:p.estado,pago:'PAGADO',transportadora:p.transportadora||'',guia:p.guia||'',notaInterna:p.notaInterna||''};
+google.script.run.withSuccessHandler(function(r){if(!r||r.auth===false)return sesionVencida();if(!r.ok)return toast('⚠️ '+(r.error||'Error'));
+p.pago='PAGADO';toast('✅ '+num+' marcado como pagado');renderCartera();renderInicio();recargarSilencioso();})
+.withFailureHandler(function(){toast('⚠️ Error de conexión');}).adminActualizarPedido(token,num,c);};
 // En GitHub la tienda es la página vecina; en Apps Script, la URL /exec
 function urlTienda(){return window.__TIENDA__||(DATOS&&DATOS.tiendaUrl)||'';}
 function esDueno(){return !!(DATOS&&DATOS.yo&&DATOS.yo.rol==='DUEÑO');}
@@ -808,10 +936,13 @@ function renderYo(){var y=(DATOS&&DATOS.yo)||{},n=String(y.nombre||y.usuario||'?
 $('yo').innerHTML=y.usuario?'<div class="avatar">'+esc(n.trim().charAt(0).toUpperCase())+'</div><div><b>'+esc(n)+'</b><span class="rol '+esc(y.rol)+'">'+esc(y.rol)+'</span></div>':'';
 var lg=$('adm-logo');if(DATOS&&DATOS.logo){lg.src=DATOS.logo;lg.style.display='';}else lg.style.display='none';
 var vt=$('ver-tienda'),tu=urlTienda();if(tu){vt.href=tu;vt.style.display='';}else vt.style.display='none';
-$('tab-usuarios').classList.toggle('oculto',!esDueno());}
-var TITULOS={resumen:['Resumen','Así va tu negocio hoy'],pedidos:['Pedidos','Confirma, empaca y despacha'],clientes:['Clientes','Tu base de compradores'],
-productos:['Productos','Catálogo, precios y stock'],resenas:['Reseñas','Aprueba lo que se publica en la tienda'],ajustes:['Ajustes','Marca, portada, envíos y textos de la tienda'],usuarios:['Usuarios','Quién puede entrar al panel']};
-window.verTab=function(v){if(v==='usuarios'&&!esDueno())v='resumen';document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('activo',t.getAttribute('data-v')===v);});
+// Solo se ven las pestañas y los títulos de los módulos que tiene la persona
+document.querySelectorAll('.side .tab').forEach(function(t){t.classList.toggle('oculto',!tabPermitida(t.getAttribute('data-v')));});
+document.querySelectorAll('.side-tit[data-m]').forEach(function(t){t.classList.toggle('oculto',!puede(t.getAttribute('data-m')));});}
+var TITULOS={inicio:['Inicio','Tus módulos'],resumen:['Resumen','Así va tu negocio hoy'],pedidos:['Pedidos','Confirma, empaca y despacha'],clientes:['Clientes','Tu base de compradores'],
+despachos:['Despachos','Empaca, despacha y pon la guía'],cartera:['Cartera','Lo que falta por cobrar'],
+productos:['Productos y stock','Catálogo, precios e inventario'],resenas:['Reseñas','Aprueba lo que se publica en la tienda'],ajustes:['Ajustes','Marca, portada, envíos y textos de la tienda'],usuarios:['Usuarios','Quién puede entrar al panel y a qué módulos']};
+window.verTab=function(v){if(!tabPermitida(v))v='inicio';document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('activo',t.getAttribute('data-v')===v);});
 document.querySelectorAll('.vista').forEach(function(x){x.classList.remove('activa');});$('v-'+v).classList.add('activa');
 var tt=TITULOS[v]||[v,''];$('vista-tit').textContent=tt[0];$('vista-sub').textContent=tt[1];toggleSide(false);window.scrollTo(0,0);};
 window.toggleSide=function(on){document.body.classList.toggle('side-abierta',!!on);};
@@ -890,7 +1021,9 @@ var tr=((DATOS.ajustes&&DATOS.ajustes.transportadoras)||[]).map(function(x){retu
 if(p.transportadora&&tr.indexOf(p.transportadora)<0)tr.push(p.transportadora);
 $('pd-trans').innerHTML='<option value="">Elegir…</option>'+tr.map(function(n){return '<option'+(n===p.transportadora?' selected':'')+'>'+esc(n)+'</option>';}).join('');
 $('pd-guia').value=p.guia||'';$('pd-nota').value=p.notaInterna||'';
-var sg=SIGUIENTE[p.estado],b=$('pd-sig');b.style.display=sg?'':'none';b.textContent=sg?'Avanzar a '+sg+' →':'';b.setAttribute('data-e',sg||'');
+// Logística no cambia pagos; Cartera no mueve estados (el servidor también lo valida)
+var mueve=puede('comercial','logistica');$('pd-estado').disabled=!mueve;$('pd-pago').disabled=!puede('comercial','cartera');
+var sg=mueve?SIGUIENTE[p.estado]:'',b=$('pd-sig');b.style.display=sg?'':'none';b.textContent=sg?'Avanzar a '+sg+' →':'';b.setAttribute('data-e',sg||'');
 $('wa-enviado').classList.toggle('resaltar',p.estado==='ENVIADO');
 $('modal-ped').classList.add('visible');
 google.script.run.withSuccessHandler(function(r){if(!r||r.auth===false)return sesionVencida();
@@ -920,7 +1053,7 @@ if(!r||r.auth===false)return sesionVencida();if(!r.ok)return toast('⚠️ '+(r.
 var p=(DATOS.pedidos||[]).find(function(x){return x.numero===pdNum;});
 if(p){p.estado=e;p.pago=c.pago;p.transportadora=c.transportadora;p.guia=c.guia;p.notaInterna=c.notaInterna;}
 toast(r.aviso?'⚠️ '+r.aviso:(e==='ENVIADO'&&pdPrev!=='ENVIADO'?'✅ Enviado. Avísale al cliente con "Avisar envío"':'✅ '+pdNum+': '+e));
-renderPedidos();renderResumen();abrirPedido(pdNum);recargarSilencioso();})
+renderPedidos();renderResumen();renderModulos();abrirPedido(pdNum);recargarSilencioso();})
 .withFailureHandler(function(){bs.forEach(function(b){b.disabled=false;});toast('⚠️ Error de conexión');})
 .adminActualizarPedido(token,pdNum,c);};
 
