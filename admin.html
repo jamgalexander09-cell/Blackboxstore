@@ -315,10 +315,35 @@ tbody tr:hover{background:#FBFAF6}
 .bienvenida h2{font-family:'Inter',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px}
 .bienvenida p{color:var(--soft);font-size:14px;margin-bottom:22px}
 .mod-chip{display:inline-block;font-size:11px;font-weight:600;background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin:1px 2px 1px 0}
+/* Inicio como bukapp: sin menú negro, barra superior blanca con marca, "Módulos" y el usuario */
+.top-marca,.top-user{display:none}
+body.en-inicio .side,body.en-inicio .side-fondo,body.en-inicio .hamb,body.en-inicio .top-tit{display:none!important}
+body.en-inicio .cuerpo{margin-left:0}
+body.en-inicio .topbar{background:var(--panel);padding:12px 28px}
+body.en-inicio .top-marca{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+body.en-inicio .top-user{display:block}
+.top-marca img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1px solid var(--gold);background:#000}
+.top-marca b{font-family:'Fraunces',serif;font-size:17px;font-weight:600}.top-marca b span{color:var(--gold)}
+.btn-mods{display:inline-flex;align-items:center;gap:7px;background:var(--gsoft);border:1px solid #EFE3C2;color:var(--gtxt);border-radius:9px;padding:7px 12px;font-size:13px;font-weight:600}
+.btn-mods .ic{width:16px;height:16px}
+.top-user{position:relative}
+.top-yo{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:5px 10px 5px 6px;font-size:13px;font-weight:600;color:var(--ink);max-width:220px}
+.top-yo .avatar{width:28px;height:28px;font-size:13px}
+.top-yo .tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top-yo .fl-ab{color:var(--soft);font-size:11px}
+.top-menu{display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px -18px rgba(0,0,0,.35);padding:6px;min-width:180px;z-index:70}
+.top-user.abierto .top-menu{display:block}
+.top-menu button{display:block;width:100%;text-align:left;background:none;border:0;border-radius:8px;padding:10px 12px;font-size:13px;color:var(--ink)}
+.top-menu button:hover{background:var(--panel2)}
+body.en-inicio .main{max-width:1280px}
+@media(max-width:900px){body.en-inicio .topbar{padding:10px 14px}.top-yo .tn{display:none}.btn-mods{padding:7px 9px}}
+/* Logística y cartera: campos dentro de la tabla */
+.sel-in{background:var(--panel);border:1px solid #DDD8CD;border-radius:8px;padding:7px 9px;font-size:13px;min-width:130px;width:100%}
+.sel-in:disabled{background:var(--panel2);color:var(--soft)}
 @media (pointer:coarse),(max-width:900px){input,select,textarea{font-size:16px!important}}
 </style>
 </head>
-<body>
+<body class="en-inicio">
 
 <div class="login-wrap" id="vista-login">
   <form class="login-box" onsubmit="hacerLogin(event)">
@@ -343,10 +368,13 @@ tbody tr:hover{background:#FBFAF6}
       <button class="tab" data-v="resenas" onclick="verTab('resenas')"><svg class="ic" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9L12 3Z"/></svg><span>Reseñas</span><em class="badge" id="res-pend"></em></button>
       <div class="side-tit" data-m="logistica">Logística</div>
       <button class="tab" data-v="dash-log" onclick="verTab('dash-log')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg><span>Dashboard</span></button>
-      <button class="tab" data-v="despachos" onclick="verTab('despachos')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Despachos</span><em class="badge" id="desp-pend"></em></button>
+      <button class="tab" data-v="empaque" onclick="verTab('empaque')"><svg class="ic" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg><span>Empaque</span><em class="badge" id="emp-pend"></em></button>
+      <button class="tab" data-v="despacho" onclick="verTab('despacho')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg><span>Despacho</span><em class="badge" id="desp-pend"></em></button>
+      <button class="tab" data-v="encamino" onclick="verTab('encamino')"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span>En camino</span><em class="badge" id="cam-pend"></em></button>
       <div class="side-tit" data-m="inventario">Inventario</div>
       <button class="tab" data-v="dash-inv" onclick="verTab('dash-inv')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg><span>Dashboard</span><em class="badge" id="inv-pend"></em></button>
       <button class="tab" data-v="productos" onclick="verTab('productos')"><svg class="ic" viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg><span>Productos y stock</span></button>
+      <button class="tab" data-v="categorias" onclick="verTab('categorias')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg><span>Categorías y marcas</span></button>
       <div class="side-tit" data-m="cartera">Cartera</div>
       <button class="tab" data-v="dash-car" onclick="verTab('dash-car')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg><span>Dashboard</span></button>
       <button class="tab" data-v="cartera" onclick="verTab('cartera')"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg><span>Cuentas por cobrar</span><em class="badge" id="car-pend"></em></button>
@@ -364,10 +392,14 @@ tbody tr:hover{background:#FBFAF6}
   <div class="cuerpo">
     <header class="topbar">
       <button class="hamb" onclick="toggleSide(true)" aria-label="Menú"><svg class="ic" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <div class="top-marca"><img id="adm-logo2" src="" alt=""><b>Black<span>Box</span></b>
+        <button class="btn-mods" onclick="verTab('inicio')"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Módulos</button></div>
       <div class="top-tit"><h1 id="vista-tit">Inicio</h1><p id="vista-sub">Tus módulos</p></div>
       <div class="top-acc">
         <a class="btn-top" id="ver-tienda" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span>Ver tienda</span></a>
         <button class="btn-top" onclick="cargarDatos()"><svg class="ic" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.9-3.9M4 4v4h4M4 13a8 8 0 0 0 14.9 3.9M20 20v-4h-4"/></svg><span>Actualizar</span></button>
+        <div class="top-user"><button class="top-yo" id="top-yo" onclick="this.parentNode.classList.toggle('abierto')"></button>
+          <div class="top-menu"><button onclick="abrirMiClave()">Mi contraseña</button><button onclick="cerrarSesion()">Cerrar sesión</button></div></div>
       </div>
     </header>
   <div class="main">
@@ -379,9 +411,32 @@ tbody tr:hover{background:#FBFAF6}
       <div class="modulos" id="ini-modulos"></div>
     </div>
 
-    <div class="vista" id="v-despachos">
-      <p class="ayuda">Pedidos confirmados que hay que empacar y despachar. Toca un pedido para cambiar su estado, poner la transportadora y la guía, o imprimir el rótulo.</p>
-      <div class="tablero" id="tablero-desp"></div>
+    <div class="vista" id="v-empaque"><div class="bloque">
+      <p class="ayuda">Pedidos <b>confirmados por Comercial y con el pago aprobado por Cartera</b> (pagado, contra entrega o crédito). Empácalos y márcalos como empacados. Toca <b>Ver</b> para imprimir la hoja interna o el rótulo.</p>
+      <div class="scroll"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Destino</th><th>Und.</th><th>Pago</th><th>Días</th><th></th><th></th></tr></thead><tbody id="tabla-empaque"></tbody></table></div>
+      <div id="emp-espera"></div>
+    </div></div>
+
+    <div class="vista" id="v-despacho"><div class="bloque">
+      <p class="ayuda">Pedidos empacados listos para entregar a la transportadora. Elige la transportadora, escribe la guía y toca <b>Despachar</b>.</p>
+      <div class="scroll"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Destino</th><th>Pago</th><th>Transportadora</th><th>Guía</th><th></th><th></th></tr></thead><tbody id="tabla-despacho"></tbody></table></div>
+    </div></div>
+
+    <div class="vista" id="v-encamino"><div class="bloque">
+      <p class="ayuda">Pedidos en manos de la transportadora. Cuando el cliente lo reciba, márcalo como <b>entregado</b>.</p>
+      <div class="scroll"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Destino</th><th>Transportadora · guía</th><th>Pago</th><th>En camino</th><th></th><th></th></tr></thead><tbody id="tabla-encamino"></tbody></table></div>
+    </div></div>
+
+    <div class="vista" id="v-categorias">
+        <div class="bloque"><h3>Categorías, familias y marcas</h3>
+          <p class="ayuda">Así se organizan los filtros de la tienda. <b>Para crear una nueva</b>, escríbela al crear o editar un producto (el campo te sugiere las que ya existen).<br>
+          <b>Renombrar</b> cambia el nombre en todos los productos que la usan. Para quitar una, renómbrala igual a otra existente (se fusionan).</p>
+          <div class="cat-cols">
+            <div><h4 class="mini-tit">Categorías</h4><div id="lst-categoria"></div></div>
+            <div><h4 class="mini-tit">Familias (subcategorías)</h4><div id="lst-subcategoria"></div></div>
+            <div><h4 class="mini-tit">Marcas</h4><div id="lst-marca"></div></div>
+          </div>
+        </div>
     </div>
 
     <div class="vista" id="v-dash-log"><div id="dl-cont"></div></div>
@@ -405,7 +460,7 @@ tbody tr:hover{background:#FBFAF6}
       <div class="filtros">
         <input type="text" id="ped-q" placeholder="Buscar por número, cliente, teléfono, ciudad o guía…" oninput="renderPedidos()">
         <select id="ped-origen" onchange="renderPedidos()"><option value="">Todos los orígenes</option><option>WEB</option><option>WHATSAPP</option><option>INSTAGRAM</option><option>TIKTOK</option><option>TIENDA</option><option>OTRO</option></select>
-        <select id="ped-pago" onchange="renderPedidos()"><option value="">Todos los pagos</option><option>PENDIENTE</option><option>PAGADO</option><option>CONTRA ENTREGA</option></select>
+        <select id="ped-pago" onchange="renderPedidos()"><option value="">Todos los pagos</option><option>PENDIENTE</option><option>PAGADO</option><option>CONTRA ENTREGA</option><option>CRÉDITO</option></select>
       </div>
       <div class="scroll">
       <table><thead><tr><th>Fecha</th><th>Pedido</th><th>Cliente</th><th>Ciudad</th><th>Origen</th><th>Pago</th><th>Total</th><th>Estado</th><th>Días</th><th></th></tr></thead>
@@ -450,7 +505,6 @@ tbody tr:hover{background:#FBFAF6}
         <button class="subtab" data-s="checkout" onclick="verSub('checkout')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>Envíos y pagos</button>
         <button class="subtab" data-s="redes" onclick="verSub('redes')"><svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>Redes</button>
         <button class="subtab" data-s="paginas" onclick="verSub('paginas')"><svg class="ic" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8l-5-5Z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>Páginas</button>
-        <button class="subtab" data-s="categorias" onclick="verSub('categorias')"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>Categorías</button>
       </div>
 
       <div class="subvista on" id="s-marca">
@@ -562,18 +616,6 @@ tbody tr:hover{background:#FBFAF6}
         </div>
       </div>
 
-      <div class="subvista" id="s-categorias">
-        <div class="bloque"><h3>Categorías, familias y marcas</h3>
-          <p class="ayuda">Así se organizan los filtros de la tienda. <b>Para crear una nueva</b>, escríbela al crear o editar un producto (el campo te sugiere las que ya existen).<br>
-          <b>Renombrar</b> cambia el nombre en todos los productos que la usan. Para quitar una, renómbrala igual a otra existente (se fusionan).</p>
-          <div class="cat-cols">
-            <div><h4 class="mini-tit">Categorías</h4><div id="lst-categoria"></div></div>
-            <div><h4 class="mini-tit">Familias (subcategorías)</h4><div id="lst-subcategoria"></div></div>
-            <div><h4 class="mini-tit">Marcas</h4><div id="lst-marca"></div></div>
-          </div>
-        </div>
-      </div>
-
       <div class="subvista" id="s-paginas">
         <div class="bloque"><h3>Quiénes somos</h3>
           <p class="ayuda"># = título de recuadro · - = viñeta · cualquier otra línea = párrafo.</p>
@@ -658,7 +700,7 @@ tbody tr:hover{background:#FBFAF6}
     <h3>Nuevo pedido manual</h3>
     <p class="ayuda">Para ventas que llegan por WhatsApp, Instagram o en persona. Los precios salen del catálogo; aquí solo pones el envío y, si aplica, un descuento.</p>
     <div class="grid2"><label>Origen de la venta<select id="np-origen"><option>WHATSAPP</option><option>INSTAGRAM</option><option>TIKTOK</option><option>TIENDA</option><option>OTRO</option></select></label>
-      <label>Estado del pago<select id="np-pago"><option>PENDIENTE</option><option>PAGADO</option><option>CONTRA ENTREGA</option></select></label></div>
+      <label>Estado del pago<select id="np-pago"><option>PENDIENTE</option><option>PAGADO</option><option>CONTRA ENTREGA</option><option>CRÉDITO</option></select></label></div>
     <div class="sep">Cliente</div>
     <div class="grid2"><label>Nombre completo *<input type="text" id="np-nombre" maxlength="80"></label><label>Celular *<input type="text" id="np-tel" maxlength="15" inputmode="tel" placeholder="3001234567"></label></div>
     <div class="grid2"><label>Cédula / NIT<input type="text" id="np-doc" maxlength="15" inputmode="numeric"></label><label>Correo<input type="text" id="np-correo" maxlength="100"></label></div>
@@ -743,26 +785,27 @@ var MODS=[
  {k:'com.pedidos',t:'Ver pedidos',d:'Lista y detalle de todos los pedidos',v:'pedidos'},
  {k:'com.crear',t:'Crear pedidos manuales',d:'Ventas por WhatsApp, Instagram o en persona',req:'com.pedidos'},
  {k:'com.confirmar',t:'Confirmar o cancelar pedidos',d:'Pasar de NUEVO a CONFIRMADO, o cancelar',req:'com.pedidos'},
- {k:'com.pagos',t:'Registrar pagos',d:'Cambiar el estado del pago en el pedido',req:'com.pedidos'},
+ {k:'com.pagos',t:'Aprobar pagos',d:'Igual que Cartera: aprobar el pago desde el pedido',req:'com.pedidos'},
  {k:'com.clientes',t:'Ver clientes',d:'Base de clientes con sus datos',v:'clientes'},
  {k:'com.exportar',t:'Exportar clientes',d:'Copiar la base a la hoja CLIENTES',req:'com.clientes'},
  {k:'com.resenas',t:'Gestionar reseñas',d:'Aprobar o borrar reseñas',v:'resenas'}]},
 {k:'logistica',t:'Logística',d:'Empaque, despacho y guías',ic:'<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>',p:[
  {k:'log.dashboard',t:'Dashboard de logística',d:'Estados, antigüedad y despachos',v:'dash-log'},
- {k:'log.despachos',t:'Ver despachos',d:'Tablero de pedidos por empacar y despachar',v:'despachos'},
- {k:'log.estados',t:'Empacar, enviar y entregar',d:'Mover pedidos a EMPACADO, ENVIADO o ENTREGADO',req:'log.despachos'},
- {k:'log.guias',t:'Transportadora y guía',d:'Asignar transportadora y número de guía',req:'log.despachos'}]},
+ {k:'log.empaque',t:'Empaque',d:'Ver los pedidos por empacar y marcarlos como empacados',v:'empaque'},
+ {k:'log.despacho',t:'Despacho',d:'Poner transportadora y guía y marcar como enviado',v:'despacho'},
+ {k:'log.entregas',t:'En camino',d:'Seguimiento de envíos y marcar como entregado',v:'encamino'}]},
 {k:'inventario',t:'Inventario',d:'Productos, precios y stock',ic:'<path d="M21 8 12 3 3 8v8l9 5 9-5V8Z"/><path d="M3 8l9 5 9-5M12 13v8"/>',p:[
  {k:'inv.dashboard',t:'Dashboard de inventario',d:'Agotados, stock bajo y rotación',v:'dash-inv'},
  {k:'inv.ver',t:'Ver productos y stock',d:'Catálogo completo, solo lectura',v:'productos'},
  {k:'inv.editar',t:'Crear y editar productos',d:'Precios, stock, fotos y datos',req:'inv.ver'},
- {k:'inv.eliminar',t:'Eliminar productos',d:'Borrar productos del catálogo',req:'inv.ver'}]},
+ {k:'inv.eliminar',t:'Eliminar productos',d:'Borrar productos del catálogo',req:'inv.ver'},
+ {k:'inv.categorias',t:'Categorías y marcas',d:'Renombrar o fusionar categorías, familias y marcas',v:'categorias'}]},
 {k:'cartera',t:'Cartera',d:'Pagos pendientes y contra entrega',ic:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>',p:[
  {k:'car.dashboard',t:'Dashboard de cartera',d:'Por cobrar, contra entrega y antigüedad',v:'dash-car'},
  {k:'car.cobros',t:'Ver cuentas por cobrar',d:'Lista de pedidos con pago pendiente',v:'cartera'},
- {k:'car.pagar',t:'Marcar como pagado',d:'Registrar que el dinero ya llegó',req:'car.cobros'}]},
+ {k:'car.pagar',t:'Aprobar pagos',d:'Aprobar como pagado, contra entrega o crédito (sin esto el pedido no pasa a logística)',req:'car.cobros'}]},
 {k:'configuracion',t:'Configuración',d:'Tienda, envíos y textos',ic:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',p:[
- {k:'conf.ajustes',t:'Editar ajustes de la tienda',d:'Marca, portada, envíos, pagos, textos y categorías',v:'ajustes'}]}];
+ {k:'conf.ajustes',t:'Editar ajustes de la tienda',d:'Marca, portada, envíos, pagos y textos',v:'ajustes'}]}];
 function misPermisos(){var y=(DATOS&&DATOS.yo)||{};return Array.isArray(y.permisos)?y.permisos:[];}
 // tiene('a','b') = tiene al menos uno de esos permisos
 function tiene(){var m=misPermisos();for(var i=0;i<arguments.length;i++)if(m.indexOf(arguments[i])>=0)return true;return false;}
@@ -953,7 +996,11 @@ if(!r||r.auth===false)return sesionVencida();DATOS=r;renderTodo();})
 
 function renderTodo(){renderYo();renderResumen();renderPedidos();renderProductos();renderResenas();renderAjustes();renderUsuarios();renderClientes();renderCategorias();renderModulos();
 var a=document.querySelector('.tab.activo');verTab(a?a.getAttribute('data-v'):'inicio');}
-function renderModulos(){renderDashLog();renderDashInv();renderDashCar();renderDespachos();renderCartera();renderInicio();}
+function renderModulos(){renderDashLog();renderDashInv();renderDashCar();renderLogistica();renderCartera();renderInicio();}
+var PAGO_OK=['PAGADO','CONTRA ENTREGA','CRÉDITO'];
+// Un pedido entra a logística solo si Comercial lo confirmó y Cartera aprobó el pago
+function aprobado(p){return PAGO_OK.indexOf(p.pago)>=0;}
+function porEmpacar(){return (DATOS.pedidos||[]).filter(function(p){return p.estado==='CONFIRMADO'&&aprobado(p);});}
 
 /* ===== DASHBOARDS: piezas comunes ===== */
 var ANT_AMBAR=3,ANT_ROJO=6,STOCK_BAJO=3; // días de atraso y unidades para "stock bajo"
@@ -1009,30 +1056,30 @@ $('dcom-cont').innerHTML=h;}
 function renderDashLog(){if(!tiene('log.dashboard')){$('dl-cont').innerHTML='';return;}
 var ped=DATOS.pedidos||[],H=hoy0(),d30=H-29*864e5;
 function de(e){return ped.filter(function(p){return p.estado===e;});}
-var nu=de('NUEVO'),co=de('CONFIRMADO'),em=de('EMPACADO'),en=de('ENVIADO'),ab=co.concat(em);
+var nu=de('NUEVO'),co=porEmpacar(),em=de('EMPACADO'),en=de('ENVIADO'),ab=co.concat(em);
 var dHoy=ped.filter(function(p){return p.fechaEnvio&&p.fechaEnvio>=H&&p.estado!=='CANCELADO';});
 var d30l=ped.filter(function(p){return p.fechaEnvio&&p.fechaEnvio>=d30&&p.estado!=='CANCELADO';});
 var ent=d30l.filter(function(p){return p.estado==='ENTREGADO';});
 var alDia=ab.filter(function(p){return diasDe(p)<ANT_AMBAR;}),atr=ab.filter(function(p){var d=diasDe(p);return d>=ANT_AMBAR&&d<ANT_ROJO;}),cri=ab.filter(function(p){return diasDe(p)>=ANT_ROJO;});
-var bloq=co.filter(function(p){return p.pago==='PENDIENTE';});
+var bloq=de('CONFIRMADO').filter(function(p){return !aprobado(p);});
 var conF=d30l.filter(function(p){return p.fecha;}),prom=conF.length?(conF.reduce(function(s,p){return s+Math.max(0,p.fechaEnvio-p.fecha);},0)/conF.length/864e5):0;
 var h=seccion('Pedidos por estado','',
 tarjeta({i:'bolsa',l:'Por confirmar',v:nu.length,d:'esperan a Comercial',tab:'pedidos',fn:"irPedidos('NUEVO')"})
-+tarjeta({i:'check',l:'Por empacar',v:co.length,d:'confirmados',c:co.length?'alerta':'',tab:'despachos'})
-+tarjeta({i:'caja',l:'Por despachar',v:em.length,d:'empacados sin guía',c:em.length?'alerta':'',tab:'despachos'})
-+tarjeta({i:'camion',l:'En camino',v:en.length,d:'con la transportadora',tab:'despachos'})
-+tarjeta({i:'reloj',l:'Despachados hoy',v:dHoy.length,d:'salieron a transportadora',c:'ok',tab:'despachos'}));
++tarjeta({i:'check',l:'Por empacar',v:co.length,d:'confirmados con pago aprobado',c:co.length?'alerta':'',tab:'empaque'})
++tarjeta({i:'caja',l:'Por despachar',v:em.length,d:'empacados sin guía',c:em.length?'alerta':'',tab:'despacho'})
++tarjeta({i:'camion',l:'En camino',v:en.length,d:'con la transportadora',tab:'encamino'})
++tarjeta({i:'reloj',l:'Despachados hoy',v:dHoy.length,d:'salieron a transportadora',c:'ok',tab:'encamino'}));
 h+=seccion('Antigüedad de los pendientes','días desde el pedido · ámbar desde '+ANT_AMBAR+' · rojo desde '+ANT_ROJO,
-tarjeta({i:'check',l:'Al día',v:alDia.length,d:'0 a '+(ANT_AMBAR-1)+' días',c:'ok',tab:'despachos'})
-+tarjeta({i:'alerta',l:'Atrasados',v:atr.length,d:ANT_AMBAR+' a '+(ANT_ROJO-1)+' días',c:atr.length?'alerta':'',tab:'despachos'})
-+tarjeta({i:'x',l:'Críticos',v:cri.length,d:ANT_ROJO+' días o más',c:cri.length?'rojo':'',tab:'despachos'})
-+tarjeta({i:'candado',l:'Bloqueados por pago',v:bloq.length,d:'esperan a Cartera, no a bodega',c:bloq.length?'alerta':'',tab:'cartera',fn:"irCartera('COBRAR')"}));
-h+='<p class="nota-dash">Solo cuenta pedidos confirmados o empacados (sin despachar ni cancelar). Un pedido confirmado con pago PENDIENTE no se puede empacar hasta que Cartera o Comercial registre el pago.</p>';
+tarjeta({i:'check',l:'Al día',v:alDia.length,d:'0 a '+(ANT_AMBAR-1)+' días',c:'ok',tab:'empaque'})
++tarjeta({i:'alerta',l:'Atrasados',v:atr.length,d:ANT_AMBAR+' a '+(ANT_ROJO-1)+' días',c:atr.length?'alerta':'',tab:'empaque'})
++tarjeta({i:'x',l:'Críticos',v:cri.length,d:ANT_ROJO+' días o más',c:cri.length?'rojo':'',tab:'empaque'})
++tarjeta({i:'candado',l:'Esperando a Cartera',v:bloq.length,d:'confirmados sin pago aprobado',c:bloq.length?'alerta':'',tab:'cartera',fn:"irCartera('COBRAR')"}));
+h+='<p class="nota-dash">Solo cuenta pedidos en bodega: confirmados con pago aprobado y empacados. Un pedido entra a logística cuando Comercial lo confirma y Cartera aprueba el pago (pagado, contra entrega o crédito).</p>';
 h+=seccion('Últimos 30 días','',
-tarjeta({i:'camion',l:'Despachados',v:d30l.length,d:'pedidos con fecha de envío',tab:'despachos'})
-+tarjeta({i:'pila',l:'Unidades despachadas',v:suma(d30l,'articulos'),d:'productos enviados',tab:'despachos'})
-+tarjeta({i:'reloj',l:'Tiempo de despacho',v:prom.toFixed(1)+' d',d:'promedio del pedido al envío',c:prom>=ANT_AMBAR?'alerta':'ok',tab:'despachos'})
-+tarjeta({i:'check',l:'Entregados',v:ent.length,d:'de los despachados en el periodo',c:'ok',tab:'despachos'}));
+tarjeta({i:'camion',l:'Despachados',v:d30l.length,d:'pedidos con fecha de envío',tab:'encamino'})
++tarjeta({i:'pila',l:'Unidades despachadas',v:suma(d30l,'articulos'),d:'productos enviados',tab:'encamino'})
++tarjeta({i:'reloj',l:'Tiempo de despacho',v:prom.toFixed(1)+' d',d:'promedio del pedido al envío',c:prom>=ANT_AMBAR?'alerta':'ok',tab:'encamino'})
++tarjeta({i:'check',l:'Entregados',v:ent.length,d:'de los despachados en el periodo',c:'ok',tab:'encamino'}));
 h+='<div class="bloque"><h3>Envíos por transportadora · 30 días</h3>'+barras(agrupar(d30l,'transportadora').map(function(x){return {n:x.n,v:x.c,t:x.c+' envío'+(x.c===1?'':'s')};}))+'</div>';
 $('dl-cont').innerHTML=h;}
 
@@ -1061,13 +1108,15 @@ $('di-cont').innerHTML=h;}
 
 /* ===== DASHBOARD DE CARTERA: por cobrar, contra entrega y antigüedad ===== */
 function renderDashCar(){if(!tiene('car.dashboard')){$('dc-cont').innerHTML='';return;}
-var pen=carteraLista('COBRAR'),ce=carteraLista('CONTRA'),todo=pen.concat(ce);
+var pen=carteraLista('COBRAR'),ce=carteraLista('CONTRA'),cr=carteraLista('CREDITO'),todo=pen.concat(ce,cr);
 var ceEnt=ce.filter(function(p){return p.estado==='ENTREGADO';}),ceCam=ce.filter(function(p){return p.estado!=='ENTREGADO';});
 var bloq=pen.filter(function(p){return p.estado==='CONFIRMADO';});
+var crV=cr.filter(function(p){return diasDe(p)>30;});
 function rango(a,b){return todo.filter(function(p){var d=diasDe(p);return d>=a&&(b==null||d<=b);});}
 var r1=rango(0,3),r2=rango(4,7),r3=rango(8);
 var h=seccion('Cartera','',
-tarjeta({i:'tarjeta',l:'Por cobrar',v:fmt(suma(pen)),d:pen.length+' pedido(s) sin pago confirmado',c:pen.length?'alerta':'ok',tab:'cartera',fn:"irCartera('COBRAR')"})
+tarjeta({i:'tarjeta',l:'Por aprobar',v:fmt(suma(pen)),d:pen.length+' pedido(s) sin pago aprobado',c:pen.length?'alerta':'ok',tab:'cartera',fn:"irCartera('COBRAR')"})
++tarjeta({i:'cal',l:'Crédito por cobrar',v:fmt(suma(cr)),d:cr.length+' pedido(s)'+(crV.length?' · '+crV.length+' con más de 30 días':''),c:crV.length?'rojo':'',tab:'cartera',fn:"irCartera('CREDITO')"})
 +tarjeta({i:'camion',l:'Contra entrega en camino',v:fmt(suma(ceCam)),d:ceCam.length+' pedido(s) aún sin entregar',tab:'cartera',fn:"irCartera('CONTRA')"})
 +tarjeta({i:'plata',l:'Transportadora debe consignar',v:fmt(suma(ceEnt)),d:ceEnt.length+' entregado(s) sin conciliar',c:ceEnt.length?'alerta':'',tab:'cartera',fn:"irCartera('CONTRA')"})
 +tarjeta({i:'pila',l:'Total en cartera',v:fmt(suma(todo)),d:todo.length+' pedido(s)',tab:'cartera',fn:"irCartera('TODOS')"}));
@@ -1075,18 +1124,18 @@ h+=seccion('Antigüedad de la cartera','días desde el pedido',
 tarjeta({i:'check',l:'0 a 3 días',v:fmt(suma(r1)),d:r1.length+' pedido(s)',c:'ok',tab:'cartera',fn:"irCartera('TODOS')"})
 +tarjeta({i:'alerta',l:'4 a 7 días',v:fmt(suma(r2)),d:r2.length+' pedido(s)',c:r2.length?'alerta':'',tab:'cartera',fn:"irCartera('TODOS')"})
 +tarjeta({i:'x',l:'8 días o más',v:fmt(suma(r3)),d:r3.length+' pedido(s)',c:r3.length?'rojo':'',tab:'cartera',fn:"irCartera('TODOS')"})
-+tarjeta({i:'candado',l:'Frenan el despacho',v:bloq.length,d:'confirmados con pago pendiente',c:bloq.length?'alerta':'',tab:'cartera',fn:"irCartera('COBRAR')"}));
++tarjeta({i:'candado',l:'Frenan el despacho',v:bloq.length,d:'confirmados esperando tu aprobación',c:bloq.length?'alerta':'',tab:'cartera',fn:"irCartera('COBRAR')"}));
 var vie=todo.slice().sort(function(a,b){return (a.fecha||0)-(b.fecha||0);}).slice(0,6);
 h+='<div class="bloque"><h3>Cobros más antiguos</h3>'+(vie.length?vie.map(function(p){var d=diasDe(p);
 return '<div class="top-item"><span class="n"><b>'+esc(p.numero)+'</b> · '+esc(p.nombre)+'</span><span class="u">'+esc(p.pago)+' · <span class="dias '+(d>=8?'rojo':(d>=4?'ambar':''))+'">'+d+' d</span></span><span class="t">'+fmt(p.total)+'</span></div>';}).join(''):'<p class="sub">No hay nada pendiente por cobrar. 🙌</p>')+'</div>';
-h+='<p class="nota-dash">No hay fecha de pago registrada, por eso aún no se puede medir lo recaudado por mes. Los cancelados no cuentan.</p>';
+h+='<p class="nota-dash">Ningún pedido pasa a logística sin tu aprobación: pagado, contra entrega o crédito. Contra entrega y crédito siguen en cartera hasta que marques el dinero como recibido. No hay fecha de pago registrada, por eso aún no se mide lo recaudado por mes.</p>';
 $('dc-cont').innerHTML=h;}
 window.irCartera=function(t){fCar=t||'COBRAR';verTab('cartera');renderCartera();};
 
 /* ===== INICIO: tarjetas de los módulos de la persona ===== */
 function pendientesDe(k){var ped=DATOS.pedidos||[];
 if(k==='comercial'){var n=ped.filter(function(p){return p.estado==='NUEVO';}).length;return n?n+' por confirmar':'';}
-if(k==='logistica'){var d=ped.filter(function(p){return p.estado==='CONFIRMADO'||p.estado==='EMPACADO';}).length;return d?d+' por despachar':'';}
+if(k==='logistica'){var d=porEmpacar().length+ped.filter(function(p){return p.estado==='EMPACADO';}).length;return d?d+' en bodega':'';}
 if(k==='cartera'){var c=carteraLista('COBRAR').length;return c?c+' por cobrar':'';}
 if(k==='inventario'){var a=(DATOS.productos||[]).filter(function(p){return p.stock!==null&&p.stock!==undefined&&p.stock<=0;}).length;return a?a+' agotado(s)':'';}
 return '';}
@@ -1097,38 +1146,77 @@ $('ini-modulos').innerHTML=l.length?l.map(function(m){var p=pendientesDe(m.k),t=
 return '<button class="modulo" onclick="verTab(\''+t+'\')"><div class="mi"><svg class="ic" viewBox="0 0 24 24">'+m.ic+'</svg></div><div><b>'+esc(m.t)+'</b><span>'+esc(m.d)+'</span>'+(p?'<em>'+esc(p)+'</em>':'')+'</div></button>';}).join('')
 :'<p class="ayuda">Tu usuario aún no tiene permisos asignados. Pídele acceso al dueño.</p>';}
 
-/* ===== LOGÍSTICA: tablero de despachos ===== */
-function renderDespachos(){var ped=DATOS.pedidos||[];
-var cols=[['CONFIRMADO','Por empacar'],['EMPACADO','Por despachar'],['ENVIADO','En camino']];
-var nd=ped.filter(function(p){return p.estado==='CONFIRMADO'||p.estado==='EMPACADO';}).length;$('desp-pend').textContent=nd||'';
-$('tablero-desp').innerHTML=cols.map(function(c){var l=ped.filter(function(p){return p.estado===c[0];});
-return '<div class="col-t"><h4><span>'+c[1]+'</span><span>'+l.length+'</span></h4>'+(l.length?l.map(function(p){
-return '<button class="tj" onclick="abrirPedido(\''+jsq(p.numero)+'\')"><div class="fila"><b>'+esc(p.numero)+'</b>'+diasHtml(p)+'</div>'
-+esc(p.nombre)+'<br><span class="sub">'+esc(p.ciudad||'—')+(p.departamento?', '+esc(p.departamento):'')+' · '+p.articulos+' und.</span>'
-+'<div class="fila" style="margin-top:6px">'+pagoPill(p.pago)+(p.guia?'<span class="sub">'+esc(p.transportadora)+' · '+esc(p.guia)+'</span>':'')+'</div></button>';}).join(''):'<p class="sub" style="padding:6px 4px">Nada aquí.</p>')+'</div>';}).join('');}
+/* ===== LOGÍSTICA: un proceso por pantalla (Empaque → Despacho → En camino) ===== */
+function filaCli(p){return '<td><b>'+esc(p.numero)+'</b><br><span class="sub">'+fechaHora(p.fecha)+'</span></td><td>'+esc(p.nombre)+'<br><span class="sub">'+esc(p.telefono)+'</span></td>'
++'<td>'+esc(p.ciudad||'—')+(p.departamento?'<br><span class="sub">'+esc(p.departamento)+'</span>':'')+'</td>';}
+function btnVer(p){return '<button class="btn-mini" onclick="abrirPedido(\''+jsq(p.numero)+'\')">Ver</button>';}
+function porFecha(a,b){return (a.fecha||0)-(b.fecha||0);}
+function renderLogistica(){var ped=DATOS.pedidos||[],trs=((DATOS.ajustes&&DATOS.ajustes.transportadoras)||[]);
+var emp=porEmpacar().sort(porFecha),des=ped.filter(function(p){return p.estado==='EMPACADO';}).sort(porFecha);
+var cam=ped.filter(function(p){return p.estado==='ENVIADO';}).sort(function(a,b){return (a.fechaEnvio||0)-(b.fechaEnvio||0);});
+var esp=ped.filter(function(p){return p.estado==='CONFIRMADO'&&!aprobado(p);});
+$('emp-pend').textContent=emp.length||'';$('desp-pend').textContent=des.length||'';$('cam-pend').textContent=cam.length||'';
+var pe=tiene('log.empaque'),pd=tiene('log.despacho'),pt=tiene('log.entregas');
+$('tabla-empaque').innerHTML=emp.length?emp.map(function(p){
+return '<tr>'+filaCli(p)+'<td><b>'+p.articulos+'</b></td><td>'+pagoPill(p.pago)+'</td><td>'+diasHtml(p)+'</td><td>'+btnVer(p)+'</td>'
++'<td>'+(pe?'<button class="btn-mini verde" onclick="marcarEmpacado(\''+jsq(p.numero)+'\',this)">✓ Empacado</button>':'')+'</td></tr>';}).join('')
+:'<tr><td colspan="8" class="sub">No hay pedidos por empacar. 🙌</td></tr>';
+$('emp-espera').innerHTML=esp.length?'<p class="ayuda" style="margin:14px 0 0">⏳ <b>'+esp.length+' pedido(s) confirmado(s) esperan que Cartera apruebe el pago.</b> Aparecerán aquí cuando lo aprueben como pagado, contra entrega o crédito.</p>':'';
+var opT=trs.map(function(x){return x.n;});
+$('tabla-despacho').innerHTML=des.length?des.map(function(p,i){var l=opT.slice();if(p.transportadora&&l.indexOf(p.transportadora)<0)l.push(p.transportadora);
+return '<tr>'+filaCli(p)+'<td>'+pagoPill(p.pago)+'</td>'
++'<td><select class="sel-in" id="dt-'+i+'"'+(pd?'':' disabled')+'><option value="">Elegir…</option>'+l.map(function(n){return '<option'+(n===p.transportadora?' selected':'')+'>'+esc(n)+'</option>';}).join('')+'</select></td>'
++'<td><input type="text" class="sel-in" id="dg-'+i+'" value="'+esc(p.guia||'')+'" placeholder="N° de guía" maxlength="40" spellcheck="false"'+(pd?'':' disabled')+'></td>'
++'<td>'+btnVer(p)+'</td><td>'+(pd?'<button class="btn-mini verde" onclick="despachar(\''+jsq(p.numero)+'\','+i+',this)">🚚 Despachar</button>':'')+'</td></tr>';}).join('')
+:'<tr><td colspan="8" class="sub">No hay pedidos empacados esperando despacho.</td></tr>';
+$('tabla-encamino').innerHTML=cam.length?cam.map(function(p){var tr=trs.find(function(x){return x.n===p.transportadora;})||{};
+var u=(tr.url&&p.guia)?tr.url.split('{guia}').join(encodeURIComponent(p.guia)):'';
+var d=p.fechaEnvio?Math.max(0,Math.round((hoy0()-new Date(p.fechaEnvio).setHours(0,0,0,0))/864e5)):0;
+return '<tr>'+filaCli(p)+'<td>'+esc(p.transportadora||'—')+(p.guia?'<br><span class="sub">'+esc(p.guia)+'</span>':'')+(u?'<br><a class="link-wpp" href="'+esc(u)+'" target="_blank" rel="noopener">Rastrear</a>':'')+'</td>'
++'<td>'+pagoPill(p.pago)+'</td><td><span class="dias '+(d>=5?'rojo':(d>=3?'ambar':''))+'">'+d+' d</span></td><td>'+btnVer(p)+'</td>'
++'<td>'+(pt?'<button class="btn-mini verde" onclick="marcarEntregado(\''+jsq(p.numero)+'\',this)">✓ Entregado</button>':'')+'</td></tr>';}).join('')
+:'<tr><td colspan="8" class="sub">No hay envíos en camino.</td></tr>';}
+// Cambio rápido de un pedido sin abrir el detalle: se conservan los demás campos tal cual
+function accionRapida(num,cam,msg,btn){var p=(DATOS.pedidos||[]).find(function(x){return x.numero===num;});if(!p)return;
+var c={estado:p.estado,pago:p.pago,transportadora:p.transportadora||'',guia:p.guia||'',notaInterna:p.notaInterna||''};for(var k in cam)c[k]=cam[k];
+if(btn)btn.disabled=true;
+google.script.run.withSuccessHandler(function(r){if(btn)btn.disabled=false;if(!r||r.auth===false)return sesionVencida();if(!r.ok)return toast('⚠️ '+(r.error||'Error'));
+p.estado=c.estado;p.pago=c.pago;p.transportadora=c.transportadora;p.guia=c.guia;if(c.estado==='ENVIADO'&&!p.fechaEnvio)p.fechaEnvio=Date.now();
+toast(r.aviso?'⚠️ '+r.aviso:msg);renderModulos();renderPedidos();renderResumen();recargarSilencioso();})
+.withFailureHandler(function(){if(btn)btn.disabled=false;toast('⚠️ Error de conexión');}).adminActualizarPedido(token,num,c);}
+window.marcarEmpacado=function(num,b){accionRapida(num,{estado:'EMPACADO'},'✅ '+num+' empacado · pasa a Despacho',b);};
+window.despachar=function(num,i,b){var t=$('dt-'+i).value,g=$('dg-'+i).value.trim();if(!t)return toast('Elige la transportadora');
+if(!g&&!confirm('¿Despachar '+num+' sin número de guía?'))return;
+accionRapida(num,{estado:'ENVIADO',transportadora:t,guia:g},'🚚 '+num+' despachado. Avísale al cliente desde "Ver"',b);};
+window.marcarEntregado=function(num,b){if(!confirm('¿Confirmas que '+num+' ya fue entregado al cliente?'))return;
+accionRapida(num,{estado:'ENTREGADO'},'✅ '+num+' entregado',b);};
 
 /* ===== CARTERA: cuentas por cobrar ===== */
 function carteraLista(t){return (DATOS.pedidos||[]).filter(function(p){if(p.estado==='CANCELADO'||p.pago==='PAGADO')return false;
-if(t==='COBRAR')return p.pago==='PENDIENTE';if(t==='CONTRA')return p.pago==='CONTRA ENTREGA';return true;});}
+if(t==='COBRAR')return p.pago==='PENDIENTE';if(t==='CONTRA')return p.pago==='CONTRA ENTREGA';if(t==='CREDITO')return p.pago==='CRÉDITO';return true;});}
 window.filtrarCar=function(t){fCar=t;renderCartera();};
-function renderCartera(){var pen=carteraLista('COBRAR'),ce=carteraLista('CONTRA');
+// Cartera aprueba el pago (pagado, contra entrega o crédito) y después registra cuando el dinero llega
+function renderCartera(){var pen=carteraLista('COBRAR'),ce=carteraLista('CONTRA'),cr=carteraLista('CREDITO');
 $('car-pend').textContent=pen.length||'';
-var T=[['COBRAR','Por cobrar',pen.length],['CONTRA','Contra entrega',ce.length],['TODOS','Todo',pen.length+ce.length]];
+var T=[['COBRAR','Por aprobar',pen.length],['CONTRA','Contra entrega',ce.length],['CREDITO','Crédito',cr.length],['TODOS','Todo',pen.length+ce.length+cr.length]];
 $('car-tabs').innerHTML=T.map(function(t){return '<button class="et'+(fCar===t[0]?' on':'')+'" onclick="filtrarCar(\''+t[0]+'\')">'+t[1]+'<b>'+t[2]+'</b></button>';}).join('');
-var l=carteraLista(fCar).slice().sort(function(a,b){return (a.fecha||0)-(b.fecha||0);}),pagar=tiene('car.pagar','com.pagos');
-$('tabla-cartera').innerHTML=l.length?l.map(function(p){var d=diasDe(p);
+var l=carteraLista(fCar).slice().sort(porFecha),pagar=tiene('car.pagar','com.pagos');
+$('tabla-cartera').innerHTML=l.length?l.map(function(p){var d=diasDe(p),n=jsq(p.numero),acc='';
+if(pagar)acc=p.pago==='PENDIENTE'?'<select class="sel-in" onchange="aprobarPago(\''+n+'\',this)"><option value="">Aprobar como…</option><option>PAGADO</option><option>CONTRA ENTREGA</option><option>CRÉDITO</option></select>'
+:'<button class="btn-mini verde" onclick="aprobarPago(\''+n+'\',null,\'PAGADO\')">✓ Dinero recibido</button>';
 return '<tr><td><b>'+esc(p.numero)+'</b><br><span class="sub">'+fechaHora(p.fecha)+'</span></td><td>'+esc(p.nombre)+'<br><span class="sub">'+esc(p.telefono)+'</span></td>'
-+'<td>'+stPill(p.estado)+'</td><td>'+pagoPill(p.pago)+'</td><td class="money">'+fmt(p.total)+'</td>'
++'<td>'+stPill(p.estado)+'</td><td>'+pagoPill(p.pago)+(p.metodoPago?'<br><span class="sub">'+esc(p.metodoPago)+'</span>':'')+'</td><td class="money">'+fmt(p.total)+'</td>'
 +'<td><span class="dias '+(d>=8?'rojo':(d>=4?'ambar':''))+'">'+d+' d</span></td>'
-+'<td><button class="btn-mini" onclick="abrirPedido(\''+jsq(p.numero)+'\')">Ver</button></td>'
-+'<td>'+(pagar?'<button class="btn-mini verde" onclick="marcarPagado(\''+jsq(p.numero)+'\')">✓ Pagado</button>':'')+'</td></tr>';}).join('')
-:'<tr><td colspan="8" class="sub">No hay nada pendiente por cobrar. 🙌</td></tr>';}
-window.marcarPagado=function(num){var p=(DATOS.pedidos||[]).find(function(x){return x.numero===num;});if(!p)return;
-if(!confirm('¿Confirmas que ya recibiste el dinero del pedido '+num+' ('+fmt(p.total)+')?'))return;
-var c={estado:p.estado,pago:'PAGADO',transportadora:p.transportadora||'',guia:p.guia||'',notaInterna:p.notaInterna||''};
-google.script.run.withSuccessHandler(function(r){if(!r||r.auth===false)return sesionVencida();if(!r.ok)return toast('⚠️ '+(r.error||'Error'));
-p.pago='PAGADO';toast('✅ '+num+' marcado como pagado');renderModulos();recargarSilencioso();})
-.withFailureHandler(function(){toast('⚠️ Error de conexión');}).adminActualizarPedido(token,num,c);};
++'<td>'+btnVer(p)+'</td><td>'+acc+'</td></tr>';}).join('')
+:'<tr><td colspan="8" class="sub">No hay nada pendiente aquí. 🙌</td></tr>';}
+window.aprobarPago=function(num,sel,val){val=val||(sel&&sel.value);if(!val)return;
+var p=(DATOS.pedidos||[]).find(function(x){return x.numero===num;});if(!p)return;
+var pasa=p.estado==='CONFIRMADO'&&p.pago==='PENDIENTE';
+var txt=p.pago==='PENDIENTE'?'¿Aprobar el pedido '+num+' ('+fmt(p.total)+') como '+val+'?'+(pasa?'\n\nPasará a Empaque (logística).':p.estado==='NUEVO'?'\n\nPasará a logística cuando Comercial lo confirme.':'')
+:'¿Confirmas que ya recibiste el dinero del pedido '+num+' ('+fmt(p.total)+')?';
+if(!confirm(txt)){if(sel)sel.value='';return;}
+accionRapida(num,{pago:val},'✅ '+num+': '+val+(pasa?' · ya pasa a Empaque':''),sel);};
+
 // En GitHub la tienda es la página vecina; en Apps Script, la URL /exec
 function urlTienda(){return window.__TIENDA__||(DATOS&&DATOS.tiendaUrl)||'';}
 function esDueno(){return !!(DATOS&&DATOS.yo&&DATOS.yo.rol==='DUEÑO');}
@@ -1146,9 +1234,13 @@ var vt=$('ver-tienda'),tu=urlTienda();if(tu){vt.href=tu;vt.style.display='';}els
 // Botones de acciones según permisos (el servidor igual las rechaza si alguien los fuerza)
 $('btn-np-abrir').classList.toggle('oculto',!tiene('com.crear'));$('btn-export').classList.toggle('oculto',!tiene('com.exportar'));
 $('btn-prod-nuevo').classList.toggle('oculto',!tiene('inv.editar'));
+$('np-pago').disabled=!tiene('com.pagos','car.pagar'); // sin ese permiso el pedido manual queda PENDIENTE para Cartera
+$('top-yo').innerHTML=y.usuario?'<span class="avatar">'+esc(n.trim().charAt(0).toUpperCase())+'</span><span class="tn">'+esc(n)+'</span><span class="fl-ab">▾</span>':'';
+var l2=$('adm-logo2');if(DATOS&&DATOS.logo){l2.src=DATOS.logo;l2.style.display='';}else l2.style.display='none';
 pintarMenu();}
 var TITULOS={inicio:['Módulos','Elige un módulo para empezar'],resumen:['Dashboard comercial','Ventas, pedidos y clientes'],pedidos:['Pedidos','Confirma y gestiona los pedidos'],clientes:['Clientes','Tu base de compradores'],
-'dash-log':['Dashboard de logística','Estados, antigüedad y despachos'],despachos:['Despachos','Empaca, despacha y pon la guía'],
+'dash-log':['Dashboard de logística','Estados, antigüedad y despachos'],empaque:['Empaque','Pedidos aprobados por empacar'],despacho:['Despacho','Transportadora, guía y envío'],encamino:['En camino','Seguimiento hasta la entrega'],
+categorias:['Categorías y marcas','Cómo se organiza el catálogo'],
 'dash-inv':['Dashboard de inventario','Agotados, stock bajo y lo que más rota'],'dash-car':['Dashboard de cartera','Lo que falta por cobrar y su antigüedad'],cartera:['Cuentas por cobrar','Pedidos con pago pendiente'],
 productos:['Productos y stock','Catálogo, precios e inventario'],resenas:['Reseñas','Aprueba lo que se publica en la tienda'],ajustes:['Ajustes','Marca, portada, envíos y textos de la tienda'],usuarios:['Usuarios','Quién puede entrar al panel y qué puede hacer']};
 window.verTab=function(v){if(!tabPermitida(v))v='inicio';MOD_ACT=v==='inicio'?'':modDeTab(v);pintarMenu();
@@ -1157,6 +1249,8 @@ document.querySelectorAll('.vista').forEach(function(x){x.classList.remove('acti
 var tt=TITULOS[v]||[v,''],m=modDe(MOD_ACT);$('vista-tit').textContent=tt[0];$('vista-sub').textContent=(m?m.t+' · ':'')+tt[1];
 document.body.classList.toggle('en-inicio',v==='inicio');toggleSide(false);window.scrollTo(0,0);};
 window.toggleSide=function(on){document.body.classList.toggle('side-abierta',!!on);};
+// El menú del usuario (arriba a la derecha) se cierra al tocar fuera de él
+document.addEventListener('click',function(e){var u=document.querySelector('.top-user');if(u&&!u.contains(e.target))u.classList.remove('abierto');});
 window.verSub=function(s){document.querySelectorAll('.subtab').forEach(function(t){t.classList.toggle('on',t.getAttribute('data-s')===s);});
 document.querySelectorAll('.subvista').forEach(function(x){x.classList.remove('on');});$('s-'+s).classList.add('on');};
 
@@ -1165,7 +1259,7 @@ var ACENTOS=new RegExp('['+String.fromCharCode(0x300)+'-'+String.fromCharCode(0x
 function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(ACENTOS,'');}
 function diasDe(p){if(!p.fecha)return 0;var h=new Date();h.setHours(0,0,0,0);var f=new Date(p.fecha);f.setHours(0,0,0,0);return Math.round((h-f)/864e5);}
 function stPill(e){return '<span class="st st-'+esc(e)+'">'+esc(e)+'</span>';}
-function pagoPill(p){var c=p==='PAGADO'?'on':(p==='CONTRA ENTREGA'?'ce':'off');return '<span class="pill '+c+'">'+esc(p)+'</span>';}
+function pagoPill(p){var c=p==='PAGADO'?'on':(p==='CONTRA ENTREGA'||p==='CRÉDITO'?'ce':'off');return '<span class="pill '+c+'">'+esc(p)+'</span>';}
 function diasHtml(p){if(ABIERTOS.indexOf(p.estado)<0)return '<span class="sub">—</span>';var d=diasDe(p);return '<span class="dias '+(d>=4?'rojo':(d>=2?'ambar':''))+'">'+d+' d</span>';}
 var TABS=[['ACTIVOS','Activos'],['NUEVO','Por confirmar'],['CONFIRMADO','Por empacar'],['EMPACADO','Por despachar'],['ENVIADO','En camino'],['ENTREGADO','Entregados'],['CANCELADO','Cancelados'],['TODOS','Todos']];
 function enTab(p,t){if(t==='TODOS')return true;if(t==='ACTIVOS')return ['NUEVO','CONFIRMADO','EMPACADO','ENVIADO'].indexOf(p.estado)>=0;return p.estado===t;}
@@ -1195,21 +1289,21 @@ $('pd-sub').innerHTML=stPill(p.estado)+' '+pagoPill(p.pago)+' <span class="sub">
 $('pd-body').innerHTML='<p class="sub" style="padding:16px 0">Cargando detalle…</p>';
 // Solo los estados que la persona puede poner: confirmar/cancelar (Comercial) o empacar/enviar/entregar (Logística)
 $('pd-estado').innerHTML=ESTADOS.filter(function(e){return e===p.estado||puedeEstado(e);}).map(function(e){return '<option'+(e===p.estado?' selected':'')+'>'+e+'</option>';}).join('');
-$('pd-pago').innerHTML=['PENDIENTE','PAGADO','CONTRA ENTREGA'].map(function(e){return '<option'+(e===p.pago?' selected':'')+'>'+e+'</option>';}).join('');
+$('pd-pago').innerHTML=['PENDIENTE','PAGADO','CONTRA ENTREGA','CRÉDITO'].map(function(e){return '<option'+(e===p.pago?' selected':'')+'>'+e+'</option>';}).join('');
 var tr=((DATOS.ajustes&&DATOS.ajustes.transportadoras)||[]).map(function(x){return x.n;});
 if(p.transportadora&&tr.indexOf(p.transportadora)<0)tr.push(p.transportadora);
 $('pd-trans').innerHTML='<option value="">Elegir…</option>'+tr.map(function(n){return '<option'+(n===p.transportadora?' selected':'')+'>'+esc(n)+'</option>';}).join('');
 $('pd-guia').value=p.guia||'';$('pd-nota').value=p.notaInterna||'';
 // Cada campo según su permiso (el servidor también lo valida)
 $('pd-estado').disabled=$('pd-estado').options.length<2;$('pd-pago').disabled=!tiene('com.pagos','car.pagar');
-$('pd-trans').disabled=$('pd-guia').disabled=!tiene('log.guias');
+$('pd-trans').disabled=$('pd-guia').disabled=!tiene('log.despacho');
 var sg=SIGUIENTE[p.estado];if(sg&&!puedeEstado(sg))sg='';var b=$('pd-sig');b.style.display=sg?'':'none';b.textContent=sg?'Avanzar a '+sg+' →':'';b.setAttribute('data-e',sg||'');
 $('wa-enviado').classList.toggle('resaltar',p.estado==='ENVIADO');
 $('modal-ped').classList.add('visible');
 google.script.run.withSuccessHandler(function(r){if(!r||r.auth===false)return sesionVencida();
 if(!r.ok)return toast('⚠️ '+(r.error||'Error'));if(pdNum!==num)return;PD=r;pintarDetalle();})
 .withFailureHandler(function(){toast('⚠️ Error de conexión');}).adminPedido(token,num);};
-function puedeEstado(e){return ['EMPACADO','ENVIADO','ENTREGADO'].indexOf(e)>=0?tiene('log.estados'):tiene('com.confirmar');}
+function puedeEstado(e){return tiene({EMPACADO:'log.empaque',ENVIADO:'log.despacho',ENTREGADO:'log.entregas'}[e]||'com.confirmar');}
 window.cerrarPedidoModal=function(){$('modal-ped').classList.remove('visible');};
 
 function pintarDetalle(){var p=PD.pedido,it=PD.items;
@@ -1226,7 +1320,7 @@ $('pd-body').innerHTML=h;}
 window.guardarPedido=function(sig){var e=sig||$('pd-estado').value;
 if(e==='CANCELADO'&&pdPrev!=='CANCELADO'&&!confirm('¿Cancelar el pedido '+pdNum+'?\nSi tenía stock descontado, se devuelve al inventario.'))return;
 var c={estado:e,pago:$('pd-pago').value,transportadora:$('pd-trans').value,guia:$('pd-guia').value.trim(),notaInterna:$('pd-nota').value.trim()};
-if(['EMPACADO','ENVIADO','ENTREGADO'].indexOf(e)>=0&&c.pago==='PENDIENTE')return toast('Primero marca el pago como PAGADO o CONTRA ENTREGA');
+if(['EMPACADO','ENVIADO','ENTREGADO'].indexOf(e)>=0&&c.pago==='PENDIENTE')return toast('Cartera aún no aprueba el pago (pagado, contra entrega o crédito): no puede pasar a logística');
 if((e==='ENVIADO'||e==='ENTREGADO')&&!c.transportadora)return toast('Elige la transportadora antes de despachar');
 var bs=[$('pd-sig'),$('pd-guardar')];bs.forEach(function(b){b.disabled=true;});
 google.script.run.withSuccessHandler(function(r){bs.forEach(function(b){b.disabled=false;});
@@ -1268,7 +1362,7 @@ w.document.open();w.document.write(tipo==='rotulo'?docRotulo(p,PD.items):(tipo==
 function docRotulo(p,items){var aj=DATOS.ajustes||{},und=items.reduce(function(s,i){return s+i.cantidad;},0);
 var SC='<'+'/script>',wa=String(aj.whatsapp||'').replace(/\D/g,'');
 var cond=p.pago==='CONTRA ENTREGA'?'<div class="cond">CONTRA ENTREGA<span>COBRAR '+fmt(p.total)+'</span></div>'
-:(p.pago==='PAGADO'?'<div class="cond">CONTADO</div>':'<div class="cond pend">PAGO PENDIENTE · NO DESPACHAR</div>');
+:(p.pago==='PAGADO'?'<div class="cond">CONTADO</div>':p.pago==='CRÉDITO'?'<div class="cond">CRÉDITO · NO COBRAR</div>':'<div class="cond pend">PAGO PENDIENTE · NO DESPACHAR</div>');
 var tr=(aj.transportadoras||[]).find(function(x){return x.n===p.transportadora;})||{};
 var rastreo=(tr.url&&p.guia)?tr.url.split('{guia}').join(encodeURIComponent(p.guia)):'';
 var qrTxt=rastreo||(wa?'https://wa.me/'+wa+'?text='+encodeURIComponent('Hola, consulto por mi pedido '+p.numero):'');
